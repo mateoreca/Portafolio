@@ -953,7 +953,7 @@
   <div class="container">
     <div class="hero-grid">
       <div>
-        <div class="hero-eyebrow" data-i18n="hero.eyebrow">Ing. de Sistemas · Grado sep. 2026 · Bogotá</div>
+        <div class="hero-eyebrow" data-i18n="hero.eyebrow">Ing. de Sistemas · Bogotá</div>
         <h1 class="hero-name">
           Mateo<br>
           Rendón <span class="accent">Cañón</span>
@@ -998,7 +998,7 @@
         <div class="section-label" data-i18n="about.label">Sobre mí</div>
         <h2 class="section-title" data-i18n="about.title">Ingeniero de sistemas enfocado en construir soluciones funcionales con impacto real en automatización, datos e inteligencia artificial.</h2>
         <p data-i18n="about.p1">
-          Soy <strong>Ingeniero de Sistemas</strong> en formación en la Universidad Jorge Tadeo Lozano, con grado proyectado para <strong>septiembre de 2026</strong>. Cuento con experiencia real en automatización de procesos, bots de negocio y desarrollo web full stack.
+          Soy <strong>Ingeniero de Sistemas</strong> de la Universidad Jorge Tadeo Lozano. Cuento con experiencia real en automatización de procesos, bots de negocio y desarrollo web full stack.
         </p>
         <p data-i18n="about.p2">
           En Sodimac Colombia desarrollé bots internos y consultas SQL que optimizaron procesos de Contratación y Bienestar. En QUANTUM apliqué análisis técnico en inspecciones de avalúos. Fuera del trabajo, construyo proyectos propios que mezclan <strong>inteligencia artificial, visión por computadora y desarrollo de aplicaciones</strong>.
@@ -1098,9 +1098,9 @@
             <span class="tag">Android</span>
             <span class="tag">Room DB</span>
           </div>
-          <h3 class="project-title" data-i18n="proj2.title">App Android de hábitos</h3>
+          <h3 class="project-title" data-i18n="proj2.title">Aplicación móvil de hábitos</h3>
           <div class="project-desc" data-i18n="proj2.desc">
-            Aplicación móvil para seguimiento y mejora de hábitos con recordatorios, estadísticas de progreso y diseño material.
+            Aplicación móvil con arquitectura modular para el seguimiento y optimización de hábitos diarios. Integra notificaciones programadas, motor de estadísticas con visualización de progreso en tiempo real y persistencia de datos local/remota. Desarrollada bajo lineamientos de Material Design para garantizar una navegación intuitiva y una alta retención de usuarios.
           </div>
           <a href="https://github.com/mateoreca/Good_Habits" target="_blank" rel="noopener" class="btn-primary project-btn-link">
             <span data-i18n="proj.viewCode">Ver en GitHub →</span>
@@ -1136,13 +1136,43 @@
             <span class="tag">JavaScript</span>
             <span class="tag">MySQL</span>
           </div>
-          <h3 class="project-title" data-i18n="proj3.title">Uppersilver — Tienda de ropa premium</h3>
+          <h3 class="project-title" data-i18n="proj3.title">Plataforma e-commerce full stack</h3>
           <div class="project-desc" data-i18n="proj3.desc">
-            Plataforma e-commerce full stack con catálogo, carrito de compras, gestión de inventario y panel de administración.
+            Plataforma e-commerce full stack para la gestión y comercialización de productos. Integra autenticación de usuarios, catálogo con filtros dinámicos, carrito de compras persistente y pasarela de pagos. Incluye un panel de administración para la gestión en tiempo real de inventarios, órdenes y métricas de ventas.
           </div>
           <a href="https://github.com/mateoreca/Uppersilver" target="_blank" rel="noopener" class="btn-primary project-btn-link">
             <span data-i18n="proj.viewCode">Ver en GitHub →</span>
           </a>
+        </div>
+      </div>
+
+      <!-- Project 4: Sodimac Bot & Automation -->
+      <div class="project-card fade-in" id="project-sodimac">
+        <div class="project-gallery-container">
+          <div class="project-img-wrapper">
+            <img class="project-gallery-img active" src="img/sodimac1.jpeg" alt="Sodimac Bot 1">
+            <img class="project-gallery-img" src="img/sodimac2.jpeg" alt="Sodimac Bot 2">
+            <img class="project-gallery-img" src="img/sodimac3.jpeg" alt="Sodimac Bot 3">
+          </div>
+          <button class="gallery-btn prev-btn" onclick="changeImage('project-sodimac', -1)">&#10094;</button>
+          <button class="gallery-btn next-btn" onclick="changeImage('project-sodimac', 1)">&#10095;</button>
+          <div class="gallery-indicators">
+            <span class="indicator active" onclick="setImage('project-sodimac', 0)"></span>
+            <span class="indicator" onclick="setImage('project-sodimac', 1)"></span>
+            <span class="indicator" onclick="setImage('project-sodimac', 2)"></span>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">WhatsApp API</span>
+            <span class="tag">SQL</span>
+            <span class="tag">Automatización</span>
+          </div>
+          <h3 class="project-title" data-i18n="proj4.title">Bot de WhatsApp y Automatización — Sodimac</h3>
+          <div class="project-desc" data-i18n="proj4.desc">
+            Bot conversacional para la automatización de contratación que integra reanudación inteligente, borrado automático por privacidad (PDP) y flujos optimizados que redujeron el tiempo de proceso de 25 a 17 min. Sistema de automatización y actualización masiva en BD: solución de procesamiento de datos para la inserción, corrección y actualización en lote de datos maestros, salarios y solicitudes de personal en base de datos, incluyendo ajustes masivos asistidos por IA.
+          </div>
         </div>
       </div>
 
@@ -1291,7 +1321,7 @@
 <!-- ── FOOTER ── -->
 <footer>
   <div class="footer-left">© 2026 <span>Mateo Rendón Cañón</span> · Bogotá, Colombia</div>
-  <div class="footer-left">Hecho con <span>♥</span> y mucho café</div>
+
 </footer>
 
 <script>
@@ -1300,13 +1330,13 @@ const translations = {
   es: {
     "nav.about": "Sobre mí", "nav.projects": "Proyectos",
     "nav.certs": "Certificaciones", "nav.stack": "Stack", "nav.contact": "Contacto",
-    "hero.eyebrow": "Ing. de Sistemas · Grado sep. 2026 · Bogotá",
+    "hero.eyebrow": "Ing. de Sistemas · Bogotá",
     "hero.desc": "Ingeniero de Sistemas con experiencia en automatización, bots, SQL y desarrollo full stack. Construyo proyectos que combinan IA y software funcional.",
     "hero.cta1": "Ver proyectos →", "hero.cta3": "Contactar",
     "hero.stat1": "proyectos", "hero.stat2": "certificaciones", "hero.stat3": "inglés EF SET",
     "about.label": "Sobre mí",
     "about.title": "Ingeniero de sistemas enfocado en construir soluciones funcionales con impacto real en automatización, datos e inteligencia artificial.",
-    "about.p1": "Soy <strong>Ingeniero de Sistemas</strong> en formación en la Universidad Jorge Tadeo Lozano, con grado proyectado para <strong>septiembre de 2026</strong>. Cuento con experiencia real en automatización de procesos, bots de negocio y desarrollo web full stack.",
+    "about.p1": "Soy <strong>Ingeniero de Sistemas</strong> de la Universidad Jorge Tadeo Lozano. Cuento con experiencia real en automatización de procesos, bots de negocio y desarrollo web full stack.",
     "about.p2": "En Sodimac Colombia desarrollé bots internos y consultas SQL que optimizaron procesos de Contratación y Bienestar. En QUANTUM apliqué análisis técnico en inspecciones de avalúos. Fuera del trabajo, construyo proyectos propios que mezclan <strong>inteligencia artificial, visión por computadora y desarrollo de aplicaciones</strong>.",
     "about.p3": "Certificado en inglés <strong>C1 Avanzado (EF SET 66/100)</strong>, Google Cloud, Scrum y ciberseguridad. Busco oportunidades donde pueda aportar desde el día uno.",
     "about.skillsLabel": "Competencias",
@@ -1320,10 +1350,12 @@ const translations = {
     "projects.label": "Proyectos", "projects.title": "Lo que construyo.", "projects.github": "Ver GitHub →",
     "proj1.title": "Arcade adaptativo con reconocimiento de emociones",
     "proj1.desc": "Juego arcade que detecta la emoción del jugador mediante la cámara en tiempo real y ajusta dinámicamente la dificultad. Combina visión por computadora, modelos de clasificación facial y lógica de juego.",
-    "proj2.title": "App Android de hábitos",
-    "proj2.desc": "Aplicación móvil para seguimiento y mejora de hábitos con recordatorios, estadísticas de progreso y diseño material.",
-    "proj3.title": "Uppersilver — Tienda de ropa premium",
-    "proj3.desc": "Plataforma e-commerce full stack con catálogo, carrito de compras, gestión de inventario y panel de administración.",
+    "proj2.title": "Aplicación móvil de hábitos",
+    "proj2.desc": "Aplicación móvil con arquitectura modular para el seguimiento y optimización de hábitos diarios. Integra notificaciones programadas, motor de estadísticas con visualización de progreso en tiempo real y persistencia de datos local/remota. Desarrollada bajo lineamientos de Material Design para garantizar una navegación intuitiva y una alta retención de usuarios.",
+    "proj3.title": "Plataforma e-commerce full stack",
+    "proj3.desc": "Plataforma e-commerce full stack para la gestión y comercialización de productos. Integra autenticación de usuarios, catálogo con filtros dinámicos, carrito de compras persistente y pasarela de pagos. Incluye un panel de administración para la gestión en tiempo real de inventarios, órdenes y métricas de ventas.",
+    "proj4.title": "Bot de WhatsApp y Automatización — Sodimac",
+    "proj4.desc": "Bot conversacional para la automatización de contratación que integra reanudación inteligente, borrado automático por privacidad (PDP) y flujos optimizados que redujeron el tiempo de proceso de 25 a 17 min. Sistema de automatización y actualización masiva en BD: solución de procesamiento de datos para la inserción, corrección y actualización en lote de datos maestros, salarios y solicitudes de personal en base de datos, incluyendo ajustes masivos asistidos por IA.",
     "proj.viewCode": "Ver código →",
     "certs.label": "Certificaciones", "certs.title": "Formación continua.",
     "cert1.name": "EF SET English Certificate — C1 Advanced",
@@ -1341,13 +1373,13 @@ const translations = {
   en: {
     "nav.about": "About", "nav.projects": "Projects",
     "nav.certs": "Certifications", "nav.stack": "Stack", "nav.contact": "Contact",
-    "hero.eyebrow": "Systems Eng. · Graduating Sep. 2026 · Bogotá",
+    "hero.eyebrow": "Systems Eng. · Bogotá",
     "hero.desc": "Systems Engineer with hands-on experience in process automation, bots, SQL and full stack development. I build projects combining AI and real-world software.",
     "hero.cta1": "View projects →", "hero.cta3": "Contact me",
     "hero.stat1": "projects", "hero.stat2": "certifications", "hero.stat3": "English EF SET",
     "about.label": "About me",
     "about.title": "Systems engineer focused on building functional solutions with real impact in automation, data and artificial intelligence.",
-    "about.p1": "I'm a <strong>Systems Engineering</strong> student at Universidad Jorge Tadeo Lozano, set to graduate in <strong>September 2026</strong>. I have real-world experience in process automation, business bots and full stack web development.",
+    "about.p1": "I'm a <strong>Systems Engineer</strong> from Universidad Jorge Tadeo Lozano. I have real-world experience in process automation, business bots and full stack web development.",
     "about.p2": "At Sodimac Colombia I built internal bots and SQL queries that optimized HR and Contracting workflows. At QUANTUM I applied technical analysis for property appraisals. Outside work, I build personal projects mixing <strong>artificial intelligence, computer vision and app development</strong>.",
     "about.p3": "Certified in English <strong>C1 Advanced (EF SET 66/100)</strong>, Google Cloud, Scrum and cybersecurity. Looking for opportunities where I can contribute from day one.",
     "about.skillsLabel": "Core skills",
@@ -1361,10 +1393,12 @@ const translations = {
     "projects.label": "Projects", "projects.title": "What I build.", "projects.github": "View GitHub →",
     "proj1.title": "Adaptive arcade with emotion recognition",
     "proj1.desc": "Arcade game that detects the player's emotion through the camera in real time and dynamically adjusts difficulty. Combines computer vision, facial classification models and game logic.",
-    "proj2.title": "Android habits app",
-    "proj2.desc": "Mobile app for tracking and improving personal habits with reminders, progress stats and material design.",
-    "proj3.title": "Premium clothing store",
-    "proj3.desc": "Full stack e-commerce platform with product catalog, shopping cart, inventory management and admin panel.",
+    "proj2.title": "Mobile habits app",
+    "proj2.desc": "Mobile app with modular architecture for daily habit tracking and optimization. Integrates scheduled notifications, a statistics engine with real-time progress visualization and local/remote data persistence. Built following Material Design guidelines to ensure intuitive navigation and high user retention.",
+    "proj3.title": "Full stack e-commerce platform",
+    "proj3.desc": "Full stack e-commerce platform for product management and sales. Integrates user authentication, catalog with dynamic filters, persistent shopping cart and payment gateway. Includes an admin panel for real-time inventory, order and sales metrics management.",
+    "proj4.title": "WhatsApp Bot & Automation — Sodimac",
+    "proj4.desc": "Conversational bot for hiring automation featuring smart session resumption, automatic privacy-compliant data deletion (PDP) and optimized flows that reduced process time from 25 to 17 min. Database mass automation and update system: data processing solution for batch insertion, correction and updating of master data, salaries and personnel requests, including AI-assisted bulk adjustments.",
     "proj.viewCode": "View code →",
     "certs.label": "Certifications", "certs.title": "Continuous learning.",
     "cert1.name": "EF SET English Certificate — C1 Advanced",
