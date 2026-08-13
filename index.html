@@ -1035,6 +1035,55 @@
     </div>
     <div class="projects-grid">
 
+      <!-- Project 5: Consultorio Odontológico -->
+      <div class="project-card fade-in" id="project-consultorio">
+        <div class="project-gallery-container">
+          <div class="project-img-wrapper">
+            <img class="project-gallery-img active" src="img/consultorio1.png" alt="Consultorio 1">
+            <img class="project-gallery-img" src="img/consultorio2.png" alt="Consultorio 2">
+            <img class="project-gallery-img" src="img/consultorio3.png" alt="Consultorio 3">
+            <img class="project-gallery-img" src="img/consultorio4.png" alt="Consultorio 4">
+            <img class="project-gallery-img" src="img/consultorio5.png" alt="Consultorio 5">
+            <img class="project-gallery-img" src="img/consultorio6.png" alt="Consultorio 6">
+            <img class="project-gallery-img" src="img/consultorio7.png" alt="Consultorio 7">
+            <img class="project-gallery-img" src="img/consultorio8.png" alt="Consultorio 8">
+            <img class="project-gallery-img" src="img/consultorio9.png" alt="Consultorio 9">
+            <img class="project-gallery-img" src="img/consultorio10.png" alt="Consultorio 10">
+            <img class="project-gallery-img" src="img/consultorio11.png" alt="Consultorio 11">
+            <img class="project-gallery-img" src="img/consultorio12.png" alt="Consultorio 12">
+          </div>
+          <button class="gallery-btn prev-btn" onclick="changeImage('project-consultorio', -1)">&#10094;</button>
+          <button class="gallery-btn next-btn" onclick="changeImage('project-consultorio', 1)">&#10095;</button>
+          <div class="gallery-indicators">
+            <span class="indicator active" onclick="setImage('project-consultorio', 0)"></span>
+            <span class="indicator" onclick="setImage('project-consultorio', 1)"></span>
+            <span class="indicator" onclick="setImage('project-consultorio', 2)"></span>
+            <span class="indicator" onclick="setImage('project-consultorio', 3)"></span>
+            <span class="indicator" onclick="setImage('project-consultorio', 4)"></span>
+            <span class="indicator" onclick="setImage('project-consultorio', 5)"></span>
+            <span class="indicator" onclick="setImage('project-consultorio', 6)"></span>
+            <span class="indicator" onclick="setImage('project-consultorio', 7)"></span>
+            <span class="indicator" onclick="setImage('project-consultorio', 8)"></span>
+            <span class="indicator" onclick="setImage('project-consultorio', 9)"></span>
+            <span class="indicator" onclick="setImage('project-consultorio', 10)"></span>
+            <span class="indicator" onclick="setImage('project-consultorio', 11)"></span>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag">JavaScript</span>
+            <span class="tag">Node.js</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Meta API</span>
+            <span class="tag">JWT</span>
+          </div>
+          <h3 class="project-title" data-i18n="proj5.title">Ecosistema de Agendamiento Clínico & Bot de WhatsApp</h3>
+          <div class="project-desc" data-i18n="proj5.desc">
+            Solución full-stack modular para la autogestión de citas odontológicas mediante WhatsApp y administración vía portal web SPA en vanilla JavaScript. Bot conversacional (Meta Cloud API) con máquina de estados y persistencia en PostgreSQL para registro de pacientes, consulta de oferta/precios y agendamiento, cancelación o reprogramación de citas en tiempo real. Portal web administrativo SPA con ruteo por hash y control de roles para gestión de agendas, sobrecupos y disponibilidad por sillas. API REST modular sobre Node.js/Express con queries parametrizadas, autenticación JWT, políticas de lockout y arquitectura fire-and-forget para notificaciones transaccionales.
+          </div>
+        </div>
+      </div>
+
       <!-- Project 1: Emotion Game -->
       <div class="project-card fade-in" id="project-arcade">
         <div class="project-gallery-container">
@@ -1070,41 +1119,33 @@
         </div>
       </div>
 
-      <!-- Project 2: Habits App -->
-      <div class="project-card fade-in" id="project-habits">
+      <!-- Project 4: Sodimac Bot & Automation -->
+      <div class="project-card fade-in" id="project-sodimac">
         <div class="project-gallery-container">
           <div class="project-img-wrapper">
-            <img class="project-gallery-img active" src="img/GoodHabits1.jpeg" alt="Good Habits 1">
-            <img class="project-gallery-img" src="img/GoodHabits2.jpeg" alt="Good Habits 2">
-            <img class="project-gallery-img" src="img/GoodHabits3.jpeg" alt="Good Habits 3">
-            <img class="project-gallery-img" src="img/GoodHabits4.jpeg" alt="Good Habits 4">
-            <img class="project-gallery-img" src="img/GoodHabits5.jpeg" alt="Good Habits 5">
-            <img class="project-gallery-img" src="img/GoodHabits6.jpeg" alt="Good Habits 6">
+            <img class="project-gallery-img active" src="img/sodimac1.png" alt="Sodimac Bot 1">
+            <img class="project-gallery-img" src="img/sodimac2.png" alt="Sodimac Bot 2">
+            <img class="project-gallery-img" src="img/sodimac3.png" alt="Sodimac Bot 3">
           </div>
-          <button class="gallery-btn prev-btn" onclick="changeImage('project-habits', -1)">&#10094;</button>
-          <button class="gallery-btn next-btn" onclick="changeImage('project-habits', 1)">&#10095;</button>
+          <button class="gallery-btn prev-btn" onclick="changeImage('project-sodimac', -1)">&#10094;</button>
+          <button class="gallery-btn next-btn" onclick="changeImage('project-sodimac', 1)">&#10095;</button>
           <div class="gallery-indicators">
-            <span class="indicator active" onclick="setImage('project-habits', 0)"></span>
-            <span class="indicator" onclick="setImage('project-habits', 1)"></span>
-            <span class="indicator" onclick="setImage('project-habits', 2)"></span>
-            <span class="indicator" onclick="setImage('project-habits', 3)"></span>
-            <span class="indicator" onclick="setImage('project-habits', 4)"></span>
-            <span class="indicator" onclick="setImage('project-habits', 5)"></span>
+            <span class="indicator active" onclick="setImage('project-sodimac', 0)"></span>
+            <span class="indicator" onclick="setImage('project-sodimac', 1)"></span>
+            <span class="indicator" onclick="setImage('project-sodimac', 2)"></span>
           </div>
         </div>
         <div class="project-body">
           <div class="project-tags">
-            <span class="tag">Kotlin</span>
-            <span class="tag">Android</span>
-            <span class="tag">Room DB</span>
+            <span class="tag">Python</span>
+            <span class="tag">WhatsApp API</span>
+            <span class="tag">SQL</span>
+            <span class="tag">Automatización</span>
           </div>
-          <h3 class="project-title" data-i18n="proj2.title">Aplicación móvil de hábitos</h3>
-          <div class="project-desc" data-i18n="proj2.desc">
-            Aplicación móvil con arquitectura modular para el seguimiento y optimización de hábitos diarios. Integra notificaciones programadas, motor de estadísticas con visualización de progreso en tiempo real y persistencia de datos local/remota. Desarrollada bajo lineamientos de Material Design para garantizar una navegación intuitiva y una alta retención de usuarios.
+          <h3 class="project-title" data-i18n="proj4.title">Bot de WhatsApp y Automatización — Sodimac</h3>
+          <div class="project-desc" data-i18n="proj4.desc">
+            Bot conversacional para la automatización de contratación que integra reanudación inteligente, borrado automático por privacidad (PDP) y flujos optimizados que redujeron el tiempo de proceso de 25 a 17 min. Sistema de automatización y actualización masiva en BD: solución de procesamiento de datos para la inserción, corrección y actualización en lote de datos maestros, salarios y solicitudes de personal en base de datos, incluyendo ajustes masivos asistidos por IA.
           </div>
-          <a href="https://github.com/mateoreca/Good_Habits" target="_blank" rel="noopener" class="btn-primary project-btn-link">
-            <span data-i18n="proj.viewCode">Ver en GitHub →</span>
-          </a>
         </div>
       </div>
 
@@ -1146,33 +1187,41 @@
         </div>
       </div>
 
-      <!-- Project 4: Sodimac Bot & Automation -->
-      <div class="project-card fade-in" id="project-sodimac">
+      <!-- Project 2: Habits App -->
+      <div class="project-card fade-in" id="project-habits">
         <div class="project-gallery-container">
           <div class="project-img-wrapper">
-            <img class="project-gallery-img active" src="img/sodimac1.jpeg" alt="Sodimac Bot 1">
-            <img class="project-gallery-img" src="img/sodimac2.jpeg" alt="Sodimac Bot 2">
-            <img class="project-gallery-img" src="img/sodimac3.jpeg" alt="Sodimac Bot 3">
+            <img class="project-gallery-img active" src="img/GoodHabits1.jpeg" alt="Good Habits 1">
+            <img class="project-gallery-img" src="img/GoodHabits2.jpeg" alt="Good Habits 2">
+            <img class="project-gallery-img" src="img/GoodHabits3.jpeg" alt="Good Habits 3">
+            <img class="project-gallery-img" src="img/GoodHabits4.jpeg" alt="Good Habits 4">
+            <img class="project-gallery-img" src="img/GoodHabits5.jpeg" alt="Good Habits 5">
+            <img class="project-gallery-img" src="img/GoodHabits6.jpeg" alt="Good Habits 6">
           </div>
-          <button class="gallery-btn prev-btn" onclick="changeImage('project-sodimac', -1)">&#10094;</button>
-          <button class="gallery-btn next-btn" onclick="changeImage('project-sodimac', 1)">&#10095;</button>
+          <button class="gallery-btn prev-btn" onclick="changeImage('project-habits', -1)">&#10094;</button>
+          <button class="gallery-btn next-btn" onclick="changeImage('project-habits', 1)">&#10095;</button>
           <div class="gallery-indicators">
-            <span class="indicator active" onclick="setImage('project-sodimac', 0)"></span>
-            <span class="indicator" onclick="setImage('project-sodimac', 1)"></span>
-            <span class="indicator" onclick="setImage('project-sodimac', 2)"></span>
+            <span class="indicator active" onclick="setImage('project-habits', 0)"></span>
+            <span class="indicator" onclick="setImage('project-habits', 1)"></span>
+            <span class="indicator" onclick="setImage('project-habits', 2)"></span>
+            <span class="indicator" onclick="setImage('project-habits', 3)"></span>
+            <span class="indicator" onclick="setImage('project-habits', 4)"></span>
+            <span class="indicator" onclick="setImage('project-habits', 5)"></span>
           </div>
         </div>
         <div class="project-body">
           <div class="project-tags">
-            <span class="tag">Python</span>
-            <span class="tag">WhatsApp API</span>
-            <span class="tag">SQL</span>
-            <span class="tag">Automatización</span>
+            <span class="tag">Kotlin</span>
+            <span class="tag">Android</span>
+            <span class="tag">Room DB</span>
           </div>
-          <h3 class="project-title" data-i18n="proj4.title">Bot de WhatsApp y Automatización — Sodimac</h3>
-          <div class="project-desc" data-i18n="proj4.desc">
-            Bot conversacional para la automatización de contratación que integra reanudación inteligente, borrado automático por privacidad (PDP) y flujos optimizados que redujeron el tiempo de proceso de 25 a 17 min. Sistema de automatización y actualización masiva en BD: solución de procesamiento de datos para la inserción, corrección y actualización en lote de datos maestros, salarios y solicitudes de personal en base de datos, incluyendo ajustes masivos asistidos por IA.
+          <h3 class="project-title" data-i18n="proj2.title">Aplicación móvil de hábitos</h3>
+          <div class="project-desc" data-i18n="proj2.desc">
+            Aplicación móvil con arquitectura modular para el seguimiento y optimización de hábitos diarios. Integra notificaciones programadas, motor de estadísticas con visualización de progreso en tiempo real y persistencia de datos local/remota. Desarrollada bajo lineamientos de Material Design para garantizar una navegación intuitiva y una alta retención de usuarios.
           </div>
+          <a href="https://github.com/mateoreca/Good_Habits" target="_blank" rel="noopener" class="btn-primary project-btn-link">
+            <span data-i18n="proj.viewCode">Ver en GitHub →</span>
+          </a>
         </div>
       </div>
 
@@ -1356,6 +1405,8 @@ const translations = {
     "proj3.desc": "Plataforma e-commerce full stack para la gestión y comercialización de productos. Integra autenticación de usuarios, catálogo con filtros dinámicos, carrito de compras persistente y pasarela de pagos. Incluye un panel de administración para la gestión en tiempo real de inventarios, órdenes y métricas de ventas.",
     "proj4.title": "Bot de WhatsApp y Automatización — Sodimac",
     "proj4.desc": "Bot conversacional para la automatización de contratación que integra reanudación inteligente, borrado automático por privacidad (PDP) y flujos optimizados que redujeron el tiempo de proceso de 25 a 17 min. Sistema de automatización y actualización masiva en BD: solución de procesamiento de datos para la inserción, corrección y actualización en lote de datos maestros, salarios y solicitudes de personal en base de datos, incluyendo ajustes masivos asistidos por IA.",
+    "proj5.title": "Ecosistema de Agendamiento Clínico & Bot de WhatsApp",
+    "proj5.desc": "Solución full-stack modular para la autogestión de citas odontológicas mediante WhatsApp y administración vía portal web SPA en vanilla JavaScript. Bot conversacional (Meta Cloud API) con máquina de estados y persistencia en PostgreSQL para registro de pacientes, consulta de oferta/precios y agendamiento, cancelación o reprogramación de citas en tiempo real. Portal web administrativo SPA con ruteo por hash y control de roles para gestión de agendas, sobrecupos y disponibilidad por sillas. API REST modular sobre Node.js/Express con queries parametrizadas, autenticación JWT, políticas de lockout y arquitectura fire-and-forget para notificaciones transaccionales.",
     "proj.viewCode": "Ver código →",
     "certs.label": "Certificaciones", "certs.title": "Formación continua.",
     "cert1.name": "EF SET English Certificate — C1 Advanced",
@@ -1399,6 +1450,8 @@ const translations = {
     "proj3.desc": "Full stack e-commerce platform for product management and sales. Integrates user authentication, catalog with dynamic filters, persistent shopping cart and payment gateway. Includes an admin panel for real-time inventory, order and sales metrics management.",
     "proj4.title": "WhatsApp Bot & Automation — Sodimac",
     "proj4.desc": "Conversational bot for hiring automation featuring smart session resumption, automatic privacy-compliant data deletion (PDP) and optimized flows that reduced process time from 25 to 17 min. Database mass automation and update system: data processing solution for batch insertion, correction and updating of master data, salaries and personnel requests, including AI-assisted bulk adjustments.",
+    "proj5.title": "Clinical Scheduling Ecosystem & WhatsApp Bot",
+    "proj5.desc": "Modular full-stack solution for self-service dental appointment management via WhatsApp and administration through a vanilla JavaScript SPA web portal. Conversational bot (Meta Cloud API) with a state machine and PostgreSQL persistence for patient registration, service/pricing queries and real-time scheduling, cancellation or rescheduling without human intervention. Admin SPA with hash routing and role-based access for agenda management, overbooking and chair-based availability. Modular REST API on Node.js/Express with parameterized queries, JWT authentication, lockout policies and fire-and-forget architecture for transactional notifications.",
     "proj.viewCode": "View code →",
     "certs.label": "Certifications", "certs.title": "Continuous learning.",
     "cert1.name": "EF SET English Certificate — C1 Advanced",
