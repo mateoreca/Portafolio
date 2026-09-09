@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="120" fill="#1A1A2E"/>
+  <rect x="16" y="16" width="480" height="480" rx="104" fill="none" stroke="#2D2D4A" stroke-width="12"/>
+  <g fill="none" stroke="#E8E8F0" stroke-width="46" stroke-linecap="square" stroke-linejoin="miter">
+    <!-- M -->
+    <path d="M96 356 V176 L156 276 L216 176 V356"/>
+    <!-- R -->
+    <path d="M272 356 V176 H340 a52 52 0 0 1 0 104 H272 M320 280 L380 356"/>
+  </g>
+  <!-- punto azul -->
+  <circle cx="426" cy="334" r="30" fill="#5B6EF8"/>
+</svg>
