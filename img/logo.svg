@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Fondo con el color de tu variable --surface -->
+  <rect width="512" height="512" rx="120" fill="#1A1A2E" />
+  
+  <!-- Borde sutil -->
+  <rect x="16" y="16" width="480" height="480" rx="104" fill="none" stroke="#2D2D4A" stroke-width="12" />
+  
+  <!-- Texto MR. -->
+  <text x="50%" y="54%" font-family="'Space Grotesk', system-ui, sans-serif" font-size="240" font-weight="700" fill="#E8E8F0" text-anchor="middle" dominant-baseline="middle" letter-spacing="-10">
+    MR<tspan fill="#5B6EF8">.</tspan>
+  </text>
+</svg>
