@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0A0A0F">
-<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light">
 <title>Mateo Rendón Cañón — Ingeniero de Sistemas</title>
 <!-- Marca que hay JS: el contenido solo se oculta para animarlo si el script puede revelarlo -->
 <script>document.documentElement.classList.add('js');</script>
@@ -17,17 +17,17 @@
   /* ── Reset & Base ── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg:        #0A0A0F;
-    --bg2:       #111118;
-    --surface:   #1A1A2E;
-    --surface2:  #22223A;
-    --border:    #2D2D4A;
-    --accent:    #5B6EF8;
-    --accent2:   #8B9BFF;
-    --text:      #E8E8F0;
-    --muted:     #7878A0;
-    --muted2:    #4A4A6A;
-    --green:     #3DD68C;
+    --bg:        #FFFFFF;
+    --bg2:       #F8FAFC;
+    --surface:   #FFFFFF;
+    --surface2:  #F1F5F9;
+    --border:    #E2E8F0;
+    --accent:    #2563EB;
+    --accent2:   #1D4ED8;   /* tono hover (más oscuro que --accent) */
+    --text:      #0F172A;
+    --muted:     #475569;
+    --muted2:    #64748B;
+    --green:     #16A34A;
     --font-display: 'Space Grotesk', sans-serif;
     --font-body:    'Inter', sans-serif;
     --font-mono:    'Space Mono', monospace;
@@ -75,7 +75,7 @@
   /* ── Scrollbar ── */
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb { background: #94A3B8; border-radius: 4px; }
 
   /* ── Nav ── */
   nav {
@@ -83,10 +83,10 @@
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 clamp(1.5rem, 5vw, 4rem);
     height: 64px;
-    background: rgba(10, 10, 15, 0.85);
+    background: rgba(255, 255, 255, 0.85);
     -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(45, 45, 74, 0.4);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
   }
 
   .nav-logo {
@@ -372,7 +372,7 @@
     inset: 0;
     background-image: radial-gradient(circle, var(--border) 1px, transparent 1px);
     background-size: 40px 40px;
-    opacity: 0.3;
+    opacity: 0.5;
     pointer-events: none;
   }
 
@@ -431,7 +431,7 @@
   @media (hover: hover) and (pointer: fine) {
     .skill-tag-item:hover {
       border-color: var(--accent);
-      background: rgba(91, 110, 248, 0.08);
+      background: rgba(37, 99, 235, 0.08);
     }
   }
 
@@ -497,7 +497,7 @@
   .project-gallery-container {
     position: relative;
     aspect-ratio: 16/10;
-    background: #080810;
+    background: #F1F5F9;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -526,19 +526,19 @@
     transition: opacity 150ms var(--ease-out);   /* la que sale se va rápido */
     z-index: 1;
     border-radius: 6px;
-    border: 2px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-    background: #000;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
+    background: #fff;
     cursor: zoom-in;
   }
 
   /* Specific frame for mobile screen app (Good Habits) */
   #project-habits .project-gallery-img {
-    border: 8px solid #20202e;
+    border: 8px solid #CBD5E1;
     border-radius: 20px;
     max-height: calc(100% - 20px);
     max-width: auto;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
   }
 
   .project-gallery-img.active {
@@ -599,7 +599,7 @@
     background: none;
     border: none;
     border-radius: 50%;
-    color: var(--muted);
+    color: rgba(255, 255, 255, 0.7);     /* el lightbox sigue oscuro: la X no puede usar --muted */
     font-size: 2.5rem;
     line-height: 1;
     cursor: pointer;
@@ -645,9 +645,9 @@
   .gallery-btn {
     position: absolute;
     top: calc(50% - 18px);
-    background: rgba(10, 10, 15, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #fff;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid var(--border);
+    color: #0F172A;
     font-size: 1rem;
     width: 36px;
     height: 36px;
@@ -672,8 +672,9 @@
     .lightbox-btn:hover {
       background: var(--accent);
       border-color: var(--accent2);
+      color: #fff;                       /* la flecha oscura no se leería sobre el azul */
     }
-    .lightbox-close:hover { color: var(--text); }
+    .lightbox-close:hover { color: #fff; }
   }
 
   .gallery-btn:active,
@@ -689,12 +690,12 @@
     display: flex;
     gap: 6px;
     z-index: 10;
-    background: rgba(10, 10, 15, 0.6);
+    background: rgba(255, 255, 255, 0.85);
     padding: 6px 10px;
     border-radius: 20px;
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border);
   }
 
   .indicator {
@@ -702,7 +703,7 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.4);
+    background: rgba(15, 23, 42, 0.55);  /* ~3.9:1 sobre la píldora clara */
     cursor: pointer;
     transition: background-color 200ms ease, transform 200ms var(--ease-out);
   }
@@ -735,9 +736,9 @@
   .tag {
     font-family: var(--font-mono);
     font-size: 0.68rem;
-    color: var(--accent);
-    background: rgba(91, 110, 248, 0.12);
-    border: 1px solid rgba(91, 110, 248, 0.25);
+    color: var(--accent2);               /* --accent daba 4.4:1 sobre este fondo; --accent2 da 5.7:1 */
+    background: rgba(37, 99, 235, 0.12);
+    border: 1px solid rgba(37, 99, 235, 0.25);
     padding: 3px 8px;
     border-radius: 4px;
     letter-spacing: 0.04em;
@@ -788,7 +789,7 @@
 
   .cert-icon {
     width: 40px; height: 40px; flex-shrink: 0;
-    background: rgba(91, 110, 248, 0.12);
+    background: rgba(37, 99, 235, 0.12);
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     font-size: 1.2rem;
@@ -887,7 +888,7 @@
 
   .contact-icon {
     width: 36px; height: 36px; flex-shrink: 0;
-    background: rgba(91, 110, 248, 0.12);
+    background: rgba(37, 99, 235, 0.12);
     border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
     font-size: 1rem;
@@ -946,7 +947,7 @@
 
   .btn-whatsapp {
     background: #25D366;
-    color: #fff;
+    color: #0F172A;                      /* 9:1 sobre el verde de marca (blanco daba 2:1); el ícono usa currentColor */
     width: 100%;
     justify-content: center;
     gap: 10px;
@@ -956,16 +957,16 @@
     width: 100%;
     justify-content: center;
     gap: 10px;
-    border-color: rgba(234, 67, 53, 0.5);
-    color: #ea4335;
+    border-color: rgba(217, 48, 37, 0.5);
+    color: #D93025;                      /* 4.8:1 sobre blanco (#ea4335 daba 3.9:1) */
   }
 
   @media (hover: hover) and (pointer: fine) {
     .btn-whatsapp:hover { background: #1ebe5a; }
     .btn-gmail:hover {
-      border-color: #ea4335;
-      background: rgba(234, 67, 53, 0.08);
-      color: #ea4335;
+      border-color: #D93025;
+      background: rgba(217, 48, 37, 0.08);
+      color: #D93025;
     }
   }
 
