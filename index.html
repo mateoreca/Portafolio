@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0A0A0F">
+<meta name="color-scheme" content="dark">
 <title>Mateo Rendón Cañón — Ingeniero de Sistemas</title>
+<!-- Marca que hay JS: el contenido solo se oculta para animarlo si el script puede revelarlo -->
+<script>document.documentElement.classList.add('js');</script>
 <link rel="icon" type="image/svg+xml" href="img/favicon.svg">
 <meta name="description" content="Portafolio de Mateo Rendón Cañón, Ingeniero de Sistemas especializado en automatización, desarrollo full stack e inteligencia artificial.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,9 +33,18 @@
     --font-mono:    'Space Mono', monospace;
     --max: 1100px;
     --radius: 12px;
+    /* Curvas de movimiento (las nativas de CSS son demasiado débiles) */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   }
 
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;            /* sin salto de layout al bloquear el scroll con el lightbox */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
 
   body {
     background: var(--bg);
@@ -47,6 +60,18 @@
 
   a { color: inherit; text-decoration: none; }
 
+  /* Controles táctiles: sin retardo de doble toque y sin seleccionar el texto al mantener pulsado */
+  a, button { touch-action: manipulation; }
+  button, .btn-primary, .btn-secondary {
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent2);
+    outline-offset: 3px;
+  }
+
   /* ── Scrollbar ── */
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
@@ -59,6 +84,7 @@
     padding: 0 clamp(1.5rem, 5vw, 4rem);
     height: 64px;
     background: rgba(10, 10, 15, 0.85);
+    -webkit-backdrop-filter: blur(16px);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid rgba(45, 45, 74, 0.4);
   }
@@ -83,11 +109,13 @@
     font-family: var(--font-display);
     font-weight: 500;
     color: var(--muted);
-    transition: color 0.2s;
+    transition: color 200ms ease;
     letter-spacing: 0.01em;
   }
 
-  .nav-links a:hover { color: var(--text); }
+  @media (hover: hover) and (pointer: fine) {
+    .nav-links a:hover { color: var(--text); }
+  }
 
   .lang-toggle {
     display: flex; align-items: center; gap: 0;
@@ -103,7 +131,7 @@
     padding: 5px 12px;
     cursor: pointer;
     color: var(--muted);
-    transition: all 0.2s;
+    transition: background-color 200ms ease, color 200ms ease;
     border: none;
     background: transparent;
     font-family: var(--font-mono);
@@ -113,6 +141,10 @@
   .lang-btn.active {
     background: var(--accent);
     color: #fff;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .lang-btn:not(.active):hover { color: var(--text); }
   }
 
   /* ── Section Layout ── */
@@ -156,6 +188,7 @@
   /* ── Hero ── */
   #hero {
     min-height: 100vh;
+    min-height: 100svh;                  /* en móvil no queda tapado por la barra del navegador */
     display: flex; align-items: center;
     padding-top: 64px;
     position: relative;
@@ -179,10 +212,10 @@
     display: flex; align-items: center; gap: 10px;
   }
 
+  /* El prompt queda fijo: un solo cursor parpadeando (el del typewriter) evita ruido visual */
   .hero-eyebrow::before {
     content: '>';
     color: var(--green);
-    animation: blink 1.1s step-end infinite;
   }
 
   @keyframes blink { 50% { opacity: 0; } }
@@ -219,6 +252,9 @@
     vertical-align: middle;
   }
 
+  /* Como un caret real: sólido mientras escribe, parpadea solo en las pausas */
+  .cursor.is-typing { animation: none; }
+
   .hero-desc {
     color: var(--muted);
     font-size: 1rem;
@@ -241,11 +277,9 @@
     font-size: 0.9rem;
     padding: 12px 24px;
     border-radius: 8px;
-    transition: all 0.2s;
+    transition: background-color 200ms ease, transform 160ms var(--ease-out);
     letter-spacing: 0.01em;
   }
-
-  .btn-primary:hover { background: var(--accent2); transform: translateY(-1px); }
 
   .btn-secondary {
     display: inline-flex; align-items: center; gap: 8px;
@@ -257,10 +291,17 @@
     padding: 11px 24px;
     border-radius: 8px;
     border: 1px solid var(--border);
-    transition: all 0.2s;
+    transition: border-color 200ms ease, color 200ms ease, background-color 200ms ease, transform 160ms var(--ease-out);
   }
 
-  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  @media (hover: hover) and (pointer: fine) {
+    .btn-primary:hover { background: var(--accent2); }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  }
+
+  /* Feedback al presionar: la interfaz "escucha" el toque (también en táctil) */
+  .btn-primary:active,
+  .btn-secondary:active { transform: scale(0.97); }
 
   .hero-avatar {
     width: clamp(180px, 18vw, 240px);
@@ -285,16 +326,18 @@
     display: block;
   }
 
-  .hero-avatar::after {
-    content: '';
-    position: absolute; inset: -2px;
-    border-radius: 50%;
-    background: conic-gradient(var(--accent) 0deg, transparent 120deg, var(--accent2) 240deg, transparent 360deg);
-    z-index: -1;
-    animation: spin 8s linear infinite;
-  }
+  /* ── Entrada del hero (una vez por visita): escalonada, corta y con ease-out fuerte ── */
+  @keyframes rise-in { from { opacity: 0; transform: translateY(12px); } }
+  @keyframes scale-in { from { opacity: 0; transform: scale(0.96); } }
+  @keyframes fade-only { from { opacity: 0; } }
 
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .hero-copy > * { animation: rise-in 500ms var(--ease-out) backwards; }
+  .hero-copy > :nth-child(2) { animation-delay: 50ms; }
+  .hero-copy > :nth-child(3) { animation-delay: 100ms; }
+  .hero-copy > :nth-child(4) { animation-delay: 150ms; }
+  .hero-copy > :nth-child(5) { animation-delay: 200ms; }
+  .hero-copy > :nth-child(6) { animation-delay: 250ms; }
+  .hero-avatar { animation: scale-in 600ms var(--ease-out) 100ms backwards; }
 
   .hero-stats {
     display: flex; gap: 2.5rem;
@@ -380,14 +423,16 @@
     border: 1px solid var(--border);
     padding: 10px 20px;
     border-radius: 8px;
-    transition: all 0.2s ease;
+    transition: border-color 200ms ease, background-color 200ms ease;
     cursor: default;
   }
 
-  .skill-tag-item:hover {
-    border-color: var(--accent);
-    background: rgba(91, 110, 248, 0.08);
-    transform: translateY(-2px);
+  /* No son clicables: solo color al pasar el mouse, sin movimiento que sugiera lo contrario */
+  @media (hover: hover) and (pointer: fine) {
+    .skill-tag-item:hover {
+      border-color: var(--accent);
+      background: rgba(91, 110, 248, 0.08);
+    }
   }
 
   /* ── Projects ── */
@@ -409,7 +454,7 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
-    transition: all 0.3s;
+    transition: border-color 200ms ease;
     display: flex;
     flex-direction: column;
   }
@@ -432,11 +477,6 @@
     }
   }
 
-  .project-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-4px);
-  }
-
   .project-title {
     font-family: var(--font-display);
     font-size: 1.25rem;
@@ -444,11 +484,13 @@
     letter-spacing: -0.02em;
     margin-bottom: 0.6rem;
     color: var(--text);
-    transition: color 0.2s;
+    transition: color 200ms ease;
   }
 
-  .project-card:hover .project-title {
-    color: var(--accent2);
+  /* La tarjeta no se desplaza: moverla bajo el cursor estorba al usar la galería */
+  @media (hover: hover) and (pointer: fine) {
+    .project-card:hover { border-color: var(--accent); }
+    .project-card:hover .project-title { color: var(--accent2); }
   }
 
   /* Gallery Container */
@@ -461,6 +503,7 @@
     align-items: center;
     justify-content: center;
     border-bottom: 1px solid var(--border);
+    touch-action: pan-y pinch-zoom;      /* el swipe horizontal cambia de imagen; el vertical sigue siendo scroll */
   }
 
   .project-img-wrapper {
@@ -480,7 +523,7 @@
     object-fit: contain;
     position: absolute;
     opacity: 0;
-    transition: opacity 0.4s ease-in-out;
+    transition: opacity 150ms var(--ease-out);   /* la que sale se va rápido */
     z-index: 1;
     border-radius: 6px;
     border: 2px solid rgba(255, 255, 255, 0.08);
@@ -501,26 +544,35 @@
   .project-gallery-img.active {
     opacity: 1;
     z-index: 2;
+    transition: opacity 250ms var(--ease-out);   /* la que entra, un poco más lenta */
   }
 
-  /* ── Lightbox Modal ── */
+  /* ── Lightbox Modal ──
+     Siempre en el DOM y oculto con visibility para poder animar entrada y salida
+     (con display:none la transición nunca llegaba a ejecutarse). */
   .lightbox-modal {
-    display: none;
+    display: flex;
     position: fixed;
     z-index: 1000;
     top: 0; left: 0;
     width: 100%; height: 100%;
     background: rgba(5, 5, 10, 0.95);
+    -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    visibility: hidden;
+    pointer-events: none;
+    /* Salida: más rápida que la entrada; visibility cambia al terminar el fundido */
+    transition: opacity 180ms var(--ease-out), visibility 0s linear 180ms;
   }
 
   .lightbox-modal.active {
-    display: flex;
     opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 250ms var(--ease-out), visibility 0s;
   }
 
   .lightbox-content {
@@ -530,34 +582,35 @@
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-    transform: scale(0.95);
-    transition: transform 0.3s ease;
+    transform: scale(0.96);              /* un modal crece desde el centro, nunca desde scale(0) */
+    transition: transform 180ms var(--ease-out);
   }
 
   .lightbox-modal.active .lightbox-content {
-    transform: scale(1);
+    transform: none;
+    transition: transform 250ms var(--ease-out);
   }
 
   .lightbox-close {
     position: absolute;
-    top: 20px; right: 25px;
+    top: 16px; right: 20px;
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    background: none;
+    border: none;
+    border-radius: 50%;
     color: var(--muted);
     font-size: 2.5rem;
+    line-height: 1;
     cursor: pointer;
-    transition: color 0.2s;
-    user-select: none;
+    transition: color 200ms ease, transform 160ms var(--ease-out);
     z-index: 1010;
-  }
-
-  .lightbox-close:hover {
-    color: var(--text);
   }
 
   /* Lightbox navigation buttons */
   .lightbox-btn {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: calc(50% - 25px);               /* centrado sin transform: así queda libre para el press */
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: #fff;
@@ -566,29 +619,32 @@
     height: 50px;
     cursor: pointer;
     border-radius: 50%;
-    transition: all 0.2s;
+    transition: background-color 200ms ease, border-color 200ms ease, transform 160ms var(--ease-out);
     z-index: 1010;
     display: flex;
     align-items: center;
     justify-content: center;
-    user-select: none;
-  }
-
-  .lightbox-btn:hover {
-    background: var(--accent);
-    border-color: var(--accent2);
-    transform: translateY(-50%) scale(1.1);
   }
 
   .lightbox-modal #lightbox-prev { left: 30px; }
   .lightbox-modal #lightbox-next { right: 30px; }
 
+  /* El diálogo recibe el foco al abrir (para lectores de pantalla); no necesita anillo propio */
+  .lightbox-modal:focus { outline: none; }
 
-  /* Navigation Buttons */
+  /* En pantallas angostas las flechas tapaban la captura: van abajo, en la zona del pulgar */
+  @media (max-width: 700px) {
+    .lightbox-content { max-height: 72%; }   /* deja libre la franja inferior de las flechas */
+    .lightbox-btn { top: auto; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
+    .lightbox-modal #lightbox-prev { left: calc(50% - 62px); }
+    .lightbox-modal #lightbox-next { right: calc(50% - 62px); }
+  }
+
+
+  /* Navigation Buttons: visibles por defecto (táctil); en escritorio aparecen al pasar el mouse */
   .gallery-btn {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    top: calc(50% - 18px);
     background: rgba(10, 10, 15, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.15);
     color: #fff;
@@ -597,26 +653,32 @@
     height: 36px;
     cursor: pointer;
     border-radius: 50%;
-    transition: all 0.2s;
+    transition: opacity 200ms ease, background-color 200ms ease, border-color 200ms ease, transform 160ms var(--ease-out);
     z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-  }
-
-  .project-gallery-container:hover .gallery-btn {
-    opacity: 1;
-  }
-
-  .gallery-btn:hover {
-    background: var(--accent);
-    border-color: var(--accent2);
-    transform: translateY(-50%) scale(1.1);
   }
 
   .prev-btn { left: 15px; }
   .next-btn { right: 15px; }
+
+  @media (hover: hover) and (pointer: fine) {
+    .gallery-btn { opacity: 0; }
+    .project-gallery-container:hover .gallery-btn,
+    .gallery-btn:focus-visible { opacity: 1; }
+
+    .gallery-btn:hover,
+    .lightbox-btn:hover {
+      background: var(--accent);
+      border-color: var(--accent2);
+    }
+    .lightbox-close:hover { color: var(--text); }
+  }
+
+  .gallery-btn:active,
+  .lightbox-btn:active,
+  .lightbox-close:active { transform: scale(0.95); }
 
   /* Gallery Indicators (dots) */
   .gallery-indicators {
@@ -630,17 +692,26 @@
     background: rgba(10, 10, 15, 0.6);
     padding: 6px 10px;
     border-radius: 20px;
+    -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .indicator {
+    position: relative;
     width: 6px;
     height: 6px;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.4);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: background-color 200ms ease, transform 200ms var(--ease-out);
+  }
+
+  /* Área de clic invisible más grande que el punto de 6px (sin solaparse con el vecino) */
+  .indicator::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
   }
 
   .indicator.active {
@@ -702,13 +773,17 @@
     border-radius: var(--radius);
     padding: 1.2rem 1.4rem;
     display: flex; align-items: flex-start; gap: 1rem;
-    transition: border-color 0.2s;
+    transition: border-color 200ms ease, transform 160ms var(--ease-out);
   }
 
-  .cert-card:hover { border-color: var(--accent); }
   a.cert-card { cursor: pointer; text-decoration: none; color: inherit; }
-  a.cert-card .cert-name { transition: color 0.2s; }
-  a.cert-card:hover .cert-name { color: var(--accent); }
+  a.cert-card .cert-name { transition: color 200ms ease; }
+  a.cert-card:active { transform: scale(0.98); }
+
+  @media (hover: hover) and (pointer: fine) {
+    .cert-card:hover { border-color: var(--accent); }
+    a.cert-card:hover .cert-name { color: var(--accent); }
+  }
   .cert-badge { margin-left: auto; font-size: 0.7rem; font-family: var(--font-mono); color: var(--accent2); display: flex; align-items: center; gap: 4px; flex-shrink: 0; padding-top: 2px; white-space: nowrap; }
 
   .cert-icon {
@@ -760,13 +835,15 @@
     padding: 1.2rem 1rem;
     display: flex; flex-direction: column; align-items: center; gap: 8px;
     text-align: center;
-    transition: all 0.2s;
+    transition: border-color 200ms ease, background-color 200ms ease;
     cursor: default;
   }
 
-  .stack-item:hover {
-    border-color: var(--accent);
-    background: var(--surface2);
+  @media (hover: hover) and (pointer: fine) {
+    .stack-item:hover {
+      border-color: var(--accent);
+      background: var(--surface2);
+    }
   }
 
   .stack-icon { font-size: 1.8rem; line-height: 1; }
@@ -799,16 +876,14 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    transition: all 0.2s;
+    transition: border-color 200ms ease, transform 160ms var(--ease-out);
     color: var(--text);
   }
 
-  .contact-item:hover { border-color: var(--accent); transform: translateX(4px); }
+  /* Email y teléfono no son enlaces, pero su texto debe poder seleccionarse y copiarse */
+  .contact-item-no-link { cursor: default; }
 
-  .contact-item-no-link {
-    cursor: default;
-    pointer-events: none;
-  }
+  a.contact-item:active { transform: scale(0.98); }
 
   .contact-icon {
     width: 36px; height: 36px; flex-shrink: 0;
@@ -832,7 +907,16 @@
     font-weight: 500;
   }
 
-  .contact-arrow { margin-left: auto; color: var(--muted2); font-size: 1rem; }
+  .contact-arrow {
+    margin-left: auto; color: var(--muted2); font-size: 1rem;
+    transition: color 200ms ease, transform 200ms var(--ease-out);
+  }
+
+  /* Solo se mueve la flecha, no toda la fila: misma pista de dirección, menos movimiento */
+  @media (hover: hover) and (pointer: fine) {
+    a.contact-item:hover { border-color: var(--accent); }
+    a.contact-item:hover .contact-arrow { color: var(--accent); transform: translateX(3px); }
+  }
 
   .contact-cta {
     text-align: center;
@@ -868,11 +952,6 @@
     gap: 10px;
   }
 
-  .btn-whatsapp:hover {
-    background: #1ebe5a;
-    transform: translateY(-2px);
-  }
-
   .btn-gmail {
     width: 100%;
     justify-content: center;
@@ -881,11 +960,13 @@
     color: #ea4335;
   }
 
-  .btn-gmail:hover {
-    border-color: #ea4335;
-    background: rgba(234, 67, 53, 0.08);
-    color: #ea4335;
-    transform: translateY(-2px);
+  @media (hover: hover) and (pointer: fine) {
+    .btn-whatsapp:hover { background: #1ebe5a; }
+    .btn-gmail:hover {
+      border-color: #ea4335;
+      background: rgba(234, 67, 53, 0.08);
+      color: #ea4335;
+    }
   }
 
   /* ── Footer ── */
@@ -904,17 +985,13 @@
 
   .footer-left span { color: var(--accent); }
 
-  /* ── Fade-in animation ── */
-  .fade-in {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-  }
+  /* ── Reveal al hacer scroll (una sola vez) ──
+     Con keyframes y fill "backwards" en vez de transition: así no pisa las
+     transiciones de hover/press de la propia tarjeta. Sin JS todo se ve normal. */
+  @keyframes reveal { from { opacity: 0; transform: translateY(16px); } }
 
-  .fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  .js .fade-in:not(.visible) { opacity: 0; }
+  .js .fade-in.visible { animation: reveal 600ms var(--ease-out) backwards; }
 
   /* ── Responsive ── */
   @media (max-width: 900px) {
@@ -926,8 +1003,17 @@
     .nav-links { display: none; }
   }
 
+  /* Movimiento reducido = menos y más suave, no cero: se mantienen los fundidos
+     (ayudan a entender qué cambió) y se elimina todo desplazamiento. */
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    html { scroll-behavior: auto; }
+    .hero-copy > *,
+    .hero-avatar,
+    .js .fade-in.visible { animation-name: fade-only; }
+    .cursor { animation: none; }
+    .lightbox-content,
+    .lightbox-modal.active .lightbox-content { transform: none; }
+    a.contact-item:hover .contact-arrow { transform: none; }
   }
 </style>
 </head>
@@ -943,9 +1029,9 @@
     <li><a href="#stack"    data-i18n="nav.stack">Stack</a></li>
     <li><a href="#contact"  data-i18n="nav.contact">Contacto</a></li>
   </ul>
-  <div class="lang-toggle">
-    <button class="lang-btn active" onclick="setLang('es')">ES</button>
-    <button class="lang-btn"        onclick="setLang('en')">EN</button>
+  <div class="lang-toggle" role="group" aria-label="Idioma / Language">
+    <button type="button" class="lang-btn active" aria-pressed="true"  onclick="setLang('es')">ES</button>
+    <button type="button" class="lang-btn"        aria-pressed="false" onclick="setLang('en')">EN</button>
   </div>
 </nav>
 
@@ -953,7 +1039,7 @@
 <section id="hero">
   <div class="container">
     <div class="hero-grid">
-      <div>
+      <div class="hero-copy">
         <div class="hero-eyebrow" data-i18n="hero.eyebrow">Ing. de Sistemas · Bogotá</div>
         <h1 class="hero-name">
           Mateo<br>
@@ -971,7 +1057,7 @@
         </div>
         <div class="hero-stats">
           <div class="stat-item">
-            <div class="stat-num">5</div>
+            <div class="stat-num">6</div>
             <div class="stat-label" data-i18n="hero.stat1">proyectos</div>
           </div>
           <div class="stat-item">
@@ -985,7 +1071,7 @@
         </div>
       </div>
       <div class="hero-avatar">
-        <img src="img/foto CV.jpeg" alt="Foto de perfil de Mateo Rendón Cañón">
+        <img src="img/foto CV.jpeg" alt="Foto de perfil de Mateo Rendón Cañón" data-i18n-alt="alt.profile">
       </div>
     </div>
   </div>
@@ -1002,17 +1088,17 @@
           Soy <strong>Ingeniero de Sistemas</strong> de la Universidad Jorge Tadeo Lozano. Cuento con experiencia real en automatización de procesos, bots de negocio y desarrollo web full stack.
         </p>
         <p data-i18n="about.p2">
-          En Sodimac Colombia desarrollé bots internos y consultas SQL que optimizaron procesos de Contratación y Bienestar. Fuera del trabajo, construyo proyectos propios que mezclan <strong>inteligencia artificial, visión por computadora y desarrollo de aplicaciones</strong>.
+          En Sodimac Colombia desarrollé bots internos y consultas SQL que optimizaron procesos de Contratación y Bienestar. Fuera del trabajo, construyo proyectos propios que combinan <strong>inteligencia artificial, visión por computadora y desarrollo de aplicaciones</strong>.
         </p>
         <p data-i18n="about.p3">
-          Certificado en inglés <strong>C2 Proficiente (EF SET 71/100)</strong>, Google Cloud, Scrum y ciberseguridad. Busco oportunidades donde pueda aportar desde el día uno.
+          Cuento con certificación de inglés <strong>C2 Proficient (EF SET 71/100)</strong> y certificaciones en Google Cloud, Scrum y ciberseguridad. Busco oportunidades donde pueda aportar desde el primer día.
         </p>
       </div>
       <div class="about-skills-grid fade-in">
         <div class="section-label" data-i18n="about.skillsLabel">Competencias</div>
         <div class="skills-list-tags">
           <span class="skill-tag-item" data-i18n="skill.python">Python & Automatización</span>
-          <span class="skill-tag-item" data-i18n="skill.bots">Bots WhatsApp API</span>
+          <span class="skill-tag-item" data-i18n="skill.bots">Bots con WhatsApp API</span>
           <span class="skill-tag-item" data-i18n="skill.sql">SQL & Bases de datos</span>
           <span class="skill-tag-item" data-i18n="skill.js">JavaScript / TypeScript</span>
           <span class="skill-tag-item" data-i18n="skill.kotlin">Kotlin & Android</span>
@@ -1034,26 +1120,64 @@
         <div class="section-label" data-i18n="projects.label">Proyectos</div>
         <h2 class="section-title" data-i18n="projects.title">Lo que construyo.</h2>
       </div>
-      <a href="https://github.com/mateoreca" target="_blank" class="btn-secondary" data-i18n="projects.github">Ver GitHub →</a>
+      <a href="https://github.com/mateoreca" target="_blank" class="btn-secondary" data-i18n="projects.github">Ver mi GitHub →</a>
     </div>
     <div class="projects-grid">
+
+      <!-- Project 6: NoShowGuard -->
+      <div class="project-card fade-in" id="project-noshowguard">
+        <div class="project-gallery-container">
+          <div class="project-img-wrapper">
+            <img loading="lazy" decoding="async" class="project-gallery-img active" src="img/ProyectoML1.png" alt="NoShowGuard: formulario con los datos de la cita y del paciente" data-i18n-alt="alt.ml1">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/ProyectoML2.png" alt="NoShowGuard: resultado con probabilidad calibrada, nivel de riesgo y factores SHAP" data-i18n-alt="alt.ml2">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/ProyectoML3.png" alt="NoShowGuard: curva “¿y si…?” del riesgo según la antelación" data-i18n-alt="alt.ml3">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/ProyectoML4.png" alt="NoShowGuard: variables exactas que vio el modelo" data-i18n-alt="alt.ml4">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/ProyectoML5.png" alt="NoShowGuard: vista completa con riesgo alto y recordatorio simulado" data-i18n-alt="alt.ml5">
+          </div>
+          <button class="gallery-btn prev-btn" onclick="changeImage('project-noshowguard', -1)">&#10094;</button>
+          <button class="gallery-btn next-btn" onclick="changeImage('project-noshowguard', 1)">&#10095;</button>
+          <div class="gallery-indicators">
+            <span class="indicator active" onclick="setImage('project-noshowguard', 0)"></span>
+            <span class="indicator" onclick="setImage('project-noshowguard', 1)"></span>
+            <span class="indicator" onclick="setImage('project-noshowguard', 2)"></span>
+            <span class="indicator" onclick="setImage('project-noshowguard', 3)"></span>
+            <span class="indicator" onclick="setImage('project-noshowguard', 4)"></span>
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-tags">
+            <span class="tag">Python</span>
+            <span class="tag">scikit-learn</span>
+            <span class="tag">SHAP</span>
+            <span class="tag">Streamlit</span>
+            <span class="tag">MLOps</span>
+          </div>
+          <h3 class="project-title" data-i18n="proj6.title">NoShowGuard — Predicción de inasistencia a citas médicas</h3>
+          <div class="project-desc" data-i18n="proj6.desc">
+            Sistema de machine learning de punta a punta que estima la probabilidad de que un paciente falte a su cita médica y recomienda si enviarle un recordatorio según el costo esperado. Entrenado con 110.527 citas reales mediante validación cronológica sin fuga de datos, usa una regresión logística calibrada que supera a todas las líneas base (PR-AUC 0,333 frente a 0,260). Incluye explicabilidad con SHAP, análisis “¿y si…?”, monitoreo de drift, 168 pruebas automatizadas, CI con GitHub Actions y una app en Streamlit.
+          </div>
+          <a href="https://github.com/mateoreca/NoShowGuard" target="_blank" rel="noopener" class="btn-primary project-btn-link">
+            <span data-i18n="proj.viewCode">Ver en GitHub →</span>
+          </a>
+        </div>
+      </div>
 
       <!-- Project 5: Consultorio Odontológico -->
       <div class="project-card fade-in" id="project-consultorio">
         <div class="project-gallery-container">
           <div class="project-img-wrapper">
-            <img class="project-gallery-img active" src="img/consultorio1.png" alt="Consultorio 1">
-            <img class="project-gallery-img" src="img/consultorio2.png" alt="Consultorio 2">
-            <img class="project-gallery-img" src="img/consultorio3.png" alt="Consultorio 3">
-            <img class="project-gallery-img" src="img/consultorio4.png" alt="Consultorio 4">
-            <img class="project-gallery-img" src="img/consultorio5.png" alt="Consultorio 5">
-            <img class="project-gallery-img" src="img/consultorio6.png" alt="Consultorio 6">
-            <img class="project-gallery-img" src="img/consultorio7.png" alt="Consultorio 7">
-            <img class="project-gallery-img" src="img/consultorio8.png" alt="Consultorio 8">
-            <img class="project-gallery-img" src="img/consultorio9.png" alt="Consultorio 9">
-            <img class="project-gallery-img" src="img/consultorio10.png" alt="Consultorio 10">
-            <img class="project-gallery-img" src="img/consultorio11.png" alt="Consultorio 11">
-            <img class="project-gallery-img" src="img/consultorio12.png" alt="Consultorio 12">
+            <img loading="lazy" decoding="async" class="project-gallery-img active" src="img/consultorio1.png" alt="Consultorio 1">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/consultorio2.png" alt="Consultorio 2">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/consultorio3.png" alt="Consultorio 3">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/consultorio4.png" alt="Consultorio 4">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/consultorio5.png" alt="Consultorio 5">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/consultorio6.png" alt="Consultorio 6">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/consultorio7.png" alt="Consultorio 7">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/consultorio8.png" alt="Consultorio 8">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/consultorio9.png" alt="Consultorio 9">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/consultorio10.png" alt="Consultorio 10">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/consultorio11.png" alt="Consultorio 11">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/consultorio12.png" alt="Consultorio 12">
           </div>
           <button class="gallery-btn prev-btn" onclick="changeImage('project-consultorio', -1)">&#10094;</button>
           <button class="gallery-btn next-btn" onclick="changeImage('project-consultorio', 1)">&#10095;</button>
@@ -1080,9 +1204,9 @@
             <span class="tag">Meta API</span>
             <span class="tag">JWT</span>
           </div>
-          <h3 class="project-title" data-i18n="proj5.title">Ecosistema de Agendamiento Clínico & Bot de WhatsApp</h3>
+          <h3 class="project-title" data-i18n="proj5.title">Ecosistema de agendamiento clínico y bot de WhatsApp</h3>
           <div class="project-desc" data-i18n="proj5.desc">
-            Solución full-stack modular para la autogestión de citas odontológicas mediante WhatsApp y administración vía portal web SPA en vanilla JavaScript. Bot conversacional (Meta Cloud API) con máquina de estados y persistencia en PostgreSQL para registro de pacientes, consulta de oferta/precios y agendamiento, cancelación o reprogramación de citas en tiempo real. Portal web administrativo SPA con ruteo por hash y control de roles para gestión de agendas, sobrecupos y disponibilidad por sillas. API REST modular sobre Node.js/Express con queries parametrizadas, autenticación JWT, políticas de lockout y arquitectura fire-and-forget para notificaciones transaccionales.
+            Solución full stack modular para la autogestión de citas odontológicas por WhatsApp y su administración desde un portal web SPA en vanilla JavaScript. Bot conversacional (Meta Cloud API) con máquina de estados y persistencia en PostgreSQL para el registro de pacientes, la consulta de servicios y precios, y el agendamiento, la cancelación o la reprogramación de citas en tiempo real, sin intervención humana. Portal administrativo SPA con ruteo por hash y control de roles para gestionar agendas, sobrecupos y disponibilidad por sillas. API REST modular sobre Node.js/Express con consultas parametrizadas, autenticación JWT, políticas de bloqueo de cuentas y arquitectura fire-and-forget para notificaciones transaccionales.
           </div>
         </div>
       </div>
@@ -1091,10 +1215,10 @@
       <div class="project-card fade-in" id="project-arcade">
         <div class="project-gallery-container">
           <div class="project-img-wrapper">
-            <img class="project-gallery-img active" src="img/arcade1.jpeg" alt="Arcade IA emociones 1">
-            <img class="project-gallery-img" src="img/arcade2.jpeg" alt="Arcade IA emociones 2">
-            <img class="project-gallery-img" src="img/arcade3.jpeg" alt="Arcade IA emociones 3">
-            <img class="project-gallery-img" src="img/arcade4.jpeg" alt="Arcade IA emociones 4">
+            <img loading="lazy" decoding="async" class="project-gallery-img active" src="img/arcade1.jpeg" alt="Arcade IA emociones 1">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/arcade2.jpeg" alt="Arcade IA emociones 2">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/arcade3.jpeg" alt="Arcade IA emociones 3">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/arcade4.jpeg" alt="Arcade IA emociones 4">
           </div>
           <button class="gallery-btn prev-btn" onclick="changeImage('project-arcade', -1)">&#10094;</button>
           <button class="gallery-btn next-btn" onclick="changeImage('project-arcade', 1)">&#10095;</button>
@@ -1110,7 +1234,7 @@
             <span class="tag">Python</span>
             <span class="tag">OpenCV</span>
             <span class="tag">TensorFlow</span>
-            <span class="tag">IA en tiempo real</span>
+            <span class="tag" data-i18n="tag.realtimeAI">IA en tiempo real</span>
           </div>
           <h3 class="project-title" data-i18n="proj1.title">Arcade adaptativo con reconocimiento de emociones</h3>
           <div class="project-desc" data-i18n="proj1.desc">
@@ -1126,9 +1250,9 @@
       <div class="project-card fade-in" id="project-sodimac">
         <div class="project-gallery-container">
           <div class="project-img-wrapper">
-            <img class="project-gallery-img active" src="img/sodimac1.png" alt="Sodimac Bot 1">
-            <img class="project-gallery-img" src="img/sodimac2.png" alt="Sodimac Bot 2">
-            <img class="project-gallery-img" src="img/sodimac3.png" alt="Sodimac Bot 3">
+            <img loading="lazy" decoding="async" class="project-gallery-img active" src="img/sodimac1.png" alt="Sodimac Bot 1">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/sodimac2.png" alt="Sodimac Bot 2">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/sodimac3.png" alt="Sodimac Bot 3">
           </div>
           <button class="gallery-btn prev-btn" onclick="changeImage('project-sodimac', -1)">&#10094;</button>
           <button class="gallery-btn next-btn" onclick="changeImage('project-sodimac', 1)">&#10095;</button>
@@ -1143,11 +1267,11 @@
             <span class="tag">Python</span>
             <span class="tag">WhatsApp API</span>
             <span class="tag">SQL</span>
-            <span class="tag">Automatización</span>
+            <span class="tag" data-i18n="tag.automation">Automatización</span>
           </div>
-          <h3 class="project-title" data-i18n="proj4.title">Bot de WhatsApp y Automatización — Sodimac</h3>
+          <h3 class="project-title" data-i18n="proj4.title">Bot de WhatsApp y automatización — Sodimac</h3>
           <div class="project-desc" data-i18n="proj4.desc">
-            Bot conversacional para la automatización de contratación que integra reanudación inteligente, borrado automático por privacidad (PDP) y flujos optimizados que redujeron el tiempo de proceso de 25 a 17 min. Sistema de automatización y actualización masiva en BD: solución de procesamiento de datos para la inserción, corrección y actualización en lote de datos maestros, salarios y solicitudes de personal en base de datos, incluyendo ajustes masivos asistidos por IA.
+            Bot conversacional que automatiza el proceso de contratación, con reanudación inteligente de sesiones, borrado automático de datos por privacidad (PDP) y flujos optimizados que redujeron el tiempo del proceso de 25 a 17 min. Además, un sistema de actualización masiva de bases de datos para insertar, corregir y actualizar en lote datos maestros, salarios y solicitudes de personal, con ajustes masivos asistidos por IA.
           </div>
         </div>
       </div>
@@ -1156,12 +1280,12 @@
       <div class="project-card fade-in" id="project-uppersilver">
         <div class="project-gallery-container">
           <div class="project-img-wrapper">
-            <img class="project-gallery-img active" src="img/uppersilver1.jpeg" alt="Uppersilver 1">
-            <img class="project-gallery-img" src="img/uppersilver2.jpeg" alt="Uppersilver 2">
-            <img class="project-gallery-img" src="img/uppersilver3.jpeg" alt="Uppersilver 3">
-            <img class="project-gallery-img" src="img/uppersilver4.jpeg" alt="Uppersilver 4">
-            <img class="project-gallery-img" src="img/uppersilver5.jpeg" alt="Uppersilver 5">
-            <img class="project-gallery-img" src="img/uppersilver6.jpeg" alt="Uppersilver 6">
+            <img loading="lazy" decoding="async" class="project-gallery-img active" src="img/uppersilver1.jpeg" alt="Uppersilver 1">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/uppersilver2.jpeg" alt="Uppersilver 2">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/uppersilver3.jpeg" alt="Uppersilver 3">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/uppersilver4.jpeg" alt="Uppersilver 4">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/uppersilver5.jpeg" alt="Uppersilver 5">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/uppersilver6.jpeg" alt="Uppersilver 6">
           </div>
           <button class="gallery-btn prev-btn" onclick="changeImage('project-uppersilver', -1)">&#10094;</button>
           <button class="gallery-btn next-btn" onclick="changeImage('project-uppersilver', 1)">&#10095;</button>
@@ -1194,12 +1318,12 @@
       <div class="project-card fade-in" id="project-habits">
         <div class="project-gallery-container">
           <div class="project-img-wrapper">
-            <img class="project-gallery-img active" src="img/GoodHabits1.jpeg" alt="Good Habits 1">
-            <img class="project-gallery-img" src="img/GoodHabits2.jpeg" alt="Good Habits 2">
-            <img class="project-gallery-img" src="img/GoodHabits3.jpeg" alt="Good Habits 3">
-            <img class="project-gallery-img" src="img/GoodHabits4.jpeg" alt="Good Habits 4">
-            <img class="project-gallery-img" src="img/GoodHabits5.jpeg" alt="Good Habits 5">
-            <img class="project-gallery-img" src="img/GoodHabits6.jpeg" alt="Good Habits 6">
+            <img loading="lazy" decoding="async" class="project-gallery-img active" src="img/GoodHabits1.jpeg" alt="Good Habits 1">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/GoodHabits2.jpeg" alt="Good Habits 2">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/GoodHabits3.jpeg" alt="Good Habits 3">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/GoodHabits4.jpeg" alt="Good Habits 4">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/GoodHabits5.jpeg" alt="Good Habits 5">
+            <img loading="lazy" decoding="async" class="project-gallery-img" src="img/GoodHabits6.jpeg" alt="Good Habits 6">
           </div>
           <button class="gallery-btn prev-btn" onclick="changeImage('project-habits', -1)">&#10094;</button>
           <button class="gallery-btn next-btn" onclick="changeImage('project-habits', 1)">&#10095;</button>
@@ -1220,7 +1344,7 @@
           </div>
           <h3 class="project-title" data-i18n="proj2.title">Aplicación móvil de hábitos</h3>
           <div class="project-desc" data-i18n="proj2.desc">
-            Aplicación móvil con arquitectura modular para el seguimiento y optimización de hábitos diarios. Integra notificaciones programadas, motor de estadísticas con visualización de progreso en tiempo real y persistencia de datos local/remota. Desarrollada bajo lineamientos de Material Design para garantizar una navegación intuitiva y una alta retención de usuarios.
+            Aplicación móvil con arquitectura modular para el seguimiento y la optimización de hábitos diarios. Integra notificaciones programadas, un motor de estadísticas con visualización del progreso en tiempo real y persistencia de datos local y remota. Desarrollada bajo los lineamientos de Material Design para garantizar una navegación intuitiva y una alta retención de usuarios.
           </div>
           <a href="https://github.com/mateoreca/Good_Habits" target="_blank" rel="noopener" class="btn-primary project-btn-link">
             <span data-i18n="proj.viewCode">Ver en GitHub →</span>
@@ -1246,7 +1370,7 @@
           <div class="cert-name" data-i18n="cert2.name">Google Cloud Computing Foundations</div>
           <div class="cert-issuer">Google · 2026</div>
         </div>
-        <div class="cert-badge">Ver ↗</div>
+        <div class="cert-badge" data-i18n="certs.view">Ver ↗</div>
       </a>
       <a class="cert-card fade-in" href="https://www.scrumstudy.com/certification/verify?type=SFC&number=1121578" target="_blank" rel="noopener">
         <div class="cert-icon">🔄</div>
@@ -1254,7 +1378,7 @@
           <div class="cert-name" data-i18n="cert3.name">Scrum Fundamentals Certified (SFC)</div>
           <div class="cert-issuer">SCRUMstudy · 2025</div>
         </div>
-        <div class="cert-badge">Ver ↗</div>
+        <div class="cert-badge" data-i18n="certs.view">Ver ↗</div>
       </a>
       <a class="cert-card fade-in" href="https://www.coursera.org/account/accomplishments/verify/QH080D1OK3U1" target="_blank" rel="noopener">
         <div class="cert-icon">🔒</div>
@@ -1262,7 +1386,7 @@
           <div class="cert-name" data-i18n="cert4.name">Fundamentos de Ciberseguridad</div>
           <div class="cert-issuer">Google / Coursera · 2025</div>
         </div>
-        <div class="cert-badge">Ver ↗</div>
+        <div class="cert-badge" data-i18n="certs.view">Ver ↗</div>
       </a>
       <a class="cert-card fade-in" href="https://www.udemy.com/certificate/UC-802c8606-d896-451a-a615-825b6adc8a66/" target="_blank" rel="noopener">
         <div class="cert-icon">⚙️</div>
@@ -1270,7 +1394,7 @@
           <div class="cert-name" data-i18n="cert7.name">Beginning C++ Programming — From Beginner to Beyond</div>
           <div class="cert-issuer">Udemy · 2026</div>
         </div>
-        <div class="cert-badge">Ver ↗</div>
+        <div class="cert-badge" data-i18n="certs.view">Ver ↗</div>
       </a>
       <a class="cert-card fade-in" href="https://www.udemy.com/certificate/UC-6653b1ef-8e77-4531-aa01-e550e7672100/" target="_blank" rel="noopener">
         <div class="cert-icon">💻</div>
@@ -1278,7 +1402,7 @@
           <div class="cert-name" data-i18n="cert5.name">Desarrollo Web Completo: HTML5, CSS3, JS, PHP, MySQL</div>
           <div class="cert-issuer">Udemy · 2025</div>
         </div>
-        <div class="cert-badge">Ver ↗</div>
+        <div class="cert-badge" data-i18n="certs.view">Ver ↗</div>
       </a>
       <a class="cert-card fade-in" href="https://cert.efset.org/es/SD4B3v" target="_blank" rel="noopener">
         <div class="cert-icon">🌐</div>
@@ -1286,7 +1410,7 @@
           <div class="cert-name" data-i18n="cert1.name">EF SET English Certificate (C2 Proficient - 71/100)</div>
           <div class="cert-issuer">EF Education First · 2026</div>
         </div>
-        <div class="cert-badge">Ver ↗</div>
+        <div class="cert-badge" data-i18n="certs.view">Ver ↗</div>
       </a>
       <a class="cert-card fade-in" href="https://wallet.xertify.co/certificates/F8D5203EA001?viewMode=regular" target="_blank" rel="noopener">
         <div class="cert-icon">🐍</div>
@@ -1294,7 +1418,7 @@
           <div class="cert-name" data-i18n="cert6.name">Python Básico</div>
           <div class="cert-issuer">Universidad ECCI · 2022</div>
         </div>
-        <div class="cert-badge">Ver ↗</div>
+        <div class="cert-badge" data-i18n="certs.view">Ver ↗</div>
       </a>
     </div>
   </div>
@@ -1354,7 +1478,7 @@
         <div class="contact-item contact-item-no-link">
           <div class="contact-icon">📞</div>
           <div>
-            <div class="contact-label">TELÉFONO</div>
+            <div class="contact-label" data-i18n="contact.phone">TELÉFONO</div>
             <div class="contact-value">+57 313 434 7992</div>
           </div>
         </div>
@@ -1398,11 +1522,11 @@ const translations = {
     "about.label": "Sobre mí",
     "about.title": "Ingeniero de sistemas enfocado en construir soluciones funcionales con impacto real en automatización, datos e inteligencia artificial.",
     "about.p1": "Soy <strong>Ingeniero de Sistemas</strong> de la Universidad Jorge Tadeo Lozano. Cuento con experiencia real en automatización de procesos, bots de negocio y desarrollo web full stack.",
-    "about.p2": "En Sodimac Colombia desarrollé bots internos y consultas SQL que optimizaron procesos de Contratación y Bienestar. Fuera del trabajo, construyo proyectos propios que mezclan <strong>inteligencia artificial, visión por computadora y desarrollo de aplicaciones</strong>.",
-    "about.p3": "Certificado en inglés <strong>C2 Proficiente (EF SET 71/100)</strong>, Google Cloud, Scrum y ciberseguridad. Busco oportunidades donde pueda aportar desde el día uno.",
+    "about.p2": "En Sodimac Colombia desarrollé bots internos y consultas SQL que optimizaron procesos de Contratación y Bienestar. Fuera del trabajo, construyo proyectos propios que combinan <strong>inteligencia artificial, visión por computadora y desarrollo de aplicaciones</strong>.",
+    "about.p3": "Cuento con certificación de inglés <strong>C2 Proficient (EF SET 71/100)</strong> y certificaciones en Google Cloud, Scrum y ciberseguridad. Busco oportunidades donde pueda aportar desde el primer día.",
     "about.skillsLabel": "Competencias",
     "skill.python": "Python & Automatización",
-    "skill.bots": "Bots WhatsApp API",
+    "skill.bots": "Bots con WhatsApp API",
     "skill.sql": "SQL & Bases de datos",
     "skill.js": "JavaScript / TypeScript",
     "skill.kotlin": "Kotlin & Android",
@@ -1410,19 +1534,31 @@ const translations = {
     "skill.frontend": "HTML / CSS / Frontend",
     "skill.git": "Git & Control de versiones",
     "skill.docker": "Docker",
-    "projects.label": "Proyectos", "projects.title": "Lo que construyo.", "projects.github": "Ver GitHub →",
+    "projects.label": "Proyectos", "projects.title": "Lo que construyo.", "projects.github": "Ver mi GitHub →",
+    "tag.realtimeAI": "IA en tiempo real", "tag.automation": "Automatización",
     "proj1.title": "Arcade adaptativo con reconocimiento de emociones",
-    "proj1.desc": "Juego arcade que detecta la emoción del jugador mediante la cámara en tiempo real y ajusta dinámicamente la dificultad. Combina visión por computadora, modelos de clasificación facial y lógica de juego.",
+    "proj1.desc": "Juego arcade que detecta la emoción del jugador mediante la cámara en tiempo real y ajusta dinámicamente la dificultad. Combina visión por computadora, modelos de clasificación facial y lógica de juego. El sistema identifica 7 emociones y escala parámetros como velocidad, obstáculos y puntaje.",
     "proj2.title": "Aplicación móvil de hábitos",
-    "proj2.desc": "Aplicación móvil con arquitectura modular para el seguimiento y optimización de hábitos diarios. Integra notificaciones programadas, motor de estadísticas con visualización de progreso en tiempo real y persistencia de datos local/remota. Desarrollada bajo lineamientos de Material Design para garantizar una navegación intuitiva y una alta retención de usuarios.",
+    "proj2.desc": "Aplicación móvil con arquitectura modular para el seguimiento y la optimización de hábitos diarios. Integra notificaciones programadas, un motor de estadísticas con visualización del progreso en tiempo real y persistencia de datos local y remota. Desarrollada bajo los lineamientos de Material Design para garantizar una navegación intuitiva y una alta retención de usuarios.",
     "proj3.title": "Plataforma e-commerce full stack",
     "proj3.desc": "Plataforma e-commerce full stack para la gestión y comercialización de productos. Integra autenticación de usuarios, catálogo con filtros dinámicos, carrito de compras persistente y pasarela de pagos. Incluye un panel de administración para la gestión en tiempo real de inventarios, órdenes y métricas de ventas.",
-    "proj4.title": "Bot de WhatsApp y Automatización — Sodimac",
-    "proj4.desc": "Bot conversacional para la automatización de contratación que integra reanudación inteligente, borrado automático por privacidad (PDP) y flujos optimizados que redujeron el tiempo de proceso de 25 a 17 min. Sistema de automatización y actualización masiva en BD: solución de procesamiento de datos para la inserción, corrección y actualización en lote de datos maestros, salarios y solicitudes de personal en base de datos, incluyendo ajustes masivos asistidos por IA.",
-    "proj5.title": "Ecosistema de Agendamiento Clínico & Bot de WhatsApp",
-    "proj5.desc": "Solución full-stack modular para la autogestión de citas odontológicas mediante WhatsApp y administración vía portal web SPA en vanilla JavaScript. Bot conversacional (Meta Cloud API) con máquina de estados y persistencia en PostgreSQL para registro de pacientes, consulta de oferta/precios y agendamiento, cancelación o reprogramación de citas en tiempo real. Portal web administrativo SPA con ruteo por hash y control de roles para gestión de agendas, sobrecupos y disponibilidad por sillas. API REST modular sobre Node.js/Express con queries parametrizadas, autenticación JWT, políticas de lockout y arquitectura fire-and-forget para notificaciones transaccionales.",
-    "proj.viewCode": "Ver código →",
-    "certs.label": "Certificaciones", "certs.title": "Formación continua.",
+    "proj4.title": "Bot de WhatsApp y automatización — Sodimac",
+    "proj4.desc": "Bot conversacional que automatiza el proceso de contratación, con reanudación inteligente de sesiones, borrado automático de datos por privacidad (PDP) y flujos optimizados que redujeron el tiempo del proceso de 25 a 17 min. Además, un sistema de actualización masiva de bases de datos para insertar, corregir y actualizar en lote datos maestros, salarios y solicitudes de personal, con ajustes masivos asistidos por IA.",
+    "proj5.title": "Ecosistema de agendamiento clínico y bot de WhatsApp",
+    "proj5.desc": "Solución full stack modular para la autogestión de citas odontológicas por WhatsApp y su administración desde un portal web SPA en vanilla JavaScript. Bot conversacional (Meta Cloud API) con máquina de estados y persistencia en PostgreSQL para el registro de pacientes, la consulta de servicios y precios, y el agendamiento, la cancelación o la reprogramación de citas en tiempo real, sin intervención humana. Portal administrativo SPA con ruteo por hash y control de roles para gestionar agendas, sobrecupos y disponibilidad por sillas. API REST modular sobre Node.js/Express con consultas parametrizadas, autenticación JWT, políticas de bloqueo de cuentas y arquitectura fire-and-forget para notificaciones transaccionales.",
+    "proj6.title": "NoShowGuard — Predicción de inasistencia a citas médicas",
+    "proj6.desc": "Sistema de machine learning de punta a punta que estima la probabilidad de que un paciente falte a su cita médica y recomienda si enviarle un recordatorio según el costo esperado. Entrenado con 110.527 citas reales mediante validación cronológica sin fuga de datos, usa una regresión logística calibrada que supera a todas las líneas base (PR-AUC 0,333 frente a 0,260). Incluye explicabilidad con SHAP, análisis “¿y si…?”, monitoreo de drift, 168 pruebas automatizadas, CI con GitHub Actions y una app en Streamlit.",
+    "proj.viewCode": "Ver en GitHub →",
+    "gallery.prev": "Imagen anterior", "gallery.next": "Imagen siguiente",
+    "gallery.close": "Cerrar", "gallery.dialog": "Vista ampliada de la imagen",
+    "alt.profile": "Foto de perfil de Mateo Rendón Cañón",
+    "alt.ml1": "NoShowGuard: formulario con los datos de la cita y del paciente",
+    "alt.ml2": "NoShowGuard: resultado con probabilidad calibrada, nivel de riesgo y factores SHAP",
+    "alt.ml3": "NoShowGuard: curva “¿y si…?” del riesgo según la antelación",
+    "alt.ml4": "NoShowGuard: variables exactas que vio el modelo",
+    "alt.ml5": "NoShowGuard: vista completa con riesgo alto y recordatorio simulado",
+    "meta.title": "Mateo Rendón Cañón — Ingeniero de Sistemas",
+    "certs.label": "Certificaciones", "certs.title": "Formación continua.", "certs.view": "Ver ↗",
     "cert1.name": "EF SET English Certificate (C2 Proficient - 71/100)",
     "cert2.name": "Google Cloud Computing Foundations",
     "cert3.name": "Scrum Fundamentals Certified (SFC)",
@@ -1433,6 +1569,7 @@ const translations = {
     "stack.label": "Tecnologías", "stack.title": "Mi stack.",
     "contact.title": "¿Hablamos?",
     "contact.desc": "Abierto a oportunidades en desarrollo de software, automatización y datos. Respondo en menos de 24 horas.",
+    "contact.phone": "TELÉFONO",
     "contact.whatsapp": "Escribir por WhatsApp →",
     "contact.gmail": "Enviar correo (Gmail) →"
   },
@@ -1440,14 +1577,14 @@ const translations = {
     "nav.about": "About", "nav.projects": "Projects",
     "nav.certs": "Certifications", "nav.stack": "Stack", "nav.contact": "Contact",
     "hero.eyebrow": "Systems Eng. · Bogotá",
-    "hero.desc": "Systems Engineer with hands-on experience in process automation, bots, SQL and full stack development. I build projects combining AI and real-world software.",
+    "hero.desc": "Systems Engineer with hands-on experience in process automation, bots, SQL and full-stack development. I build projects that combine AI with real-world software.",
     "hero.cta1": "View projects →", "hero.cta3": "Contact me",
-    "hero.stat1": "projects", "hero.stat2": "certifications", "hero.stat3": "English EF SET",
+    "hero.stat1": "projects", "hero.stat2": "certifications", "hero.stat3": "EF SET English",
     "about.label": "About me",
     "about.title": "Systems engineer focused on building functional solutions with real impact in automation, data and artificial intelligence.",
-    "about.p1": "I'm a <strong>Systems Engineer</strong> from Universidad Jorge Tadeo Lozano. I have real-world experience in process automation, business bots and full stack web development.",
-    "about.p2": "At Sodimac Colombia I built internal bots and SQL queries that optimized HR and Contracting workflows. Outside work, I build personal projects mixing <strong>artificial intelligence, computer vision and app development</strong>.",
-    "about.p3": "Certified in English <strong>C2 Proficient (EF SET 71/100)</strong>, Google Cloud, Scrum and cybersecurity. Looking for opportunities where I can contribute from day one.",
+    "about.p1": "I'm a <strong>Systems Engineer</strong> from Universidad Jorge Tadeo Lozano. I have hands-on experience in process automation, business bots and full-stack web development.",
+    "about.p2": "At Sodimac Colombia, I built internal bots and SQL queries that optimized the Hiring and Employee Wellbeing processes. Outside work, I build personal projects that combine <strong>artificial intelligence, computer vision and app development</strong>.",
+    "about.p3": "I hold an English certification at <strong>C2 Proficient (EF SET 71/100)</strong>, along with certifications in Google Cloud, Scrum and cybersecurity. I'm looking for opportunities where I can contribute from day one.",
     "about.skillsLabel": "Core skills",
     "skill.python": "Python & Automation",
     "skill.bots": "WhatsApp API Bots",
@@ -1458,19 +1595,31 @@ const translations = {
     "skill.frontend": "HTML / CSS / Frontend",
     "skill.git": "Git & Version Control",
     "skill.docker": "Docker",
-    "projects.label": "Projects", "projects.title": "What I build.", "projects.github": "View GitHub →",
+    "projects.label": "Projects", "projects.title": "What I build.", "projects.github": "View my GitHub →",
+    "tag.realtimeAI": "Real-time AI", "tag.automation": "Automation",
     "proj1.title": "Adaptive arcade with emotion recognition",
-    "proj1.desc": "Arcade game that detects the player's emotion through the camera in real time and dynamically adjusts difficulty. Combines computer vision, facial classification models and game logic.",
-    "proj2.title": "Mobile habits app",
-    "proj2.desc": "Mobile app with modular architecture for daily habit tracking and optimization. Integrates scheduled notifications, a statistics engine with real-time progress visualization and local/remote data persistence. Built following Material Design guidelines to ensure intuitive navigation and high user retention.",
-    "proj3.title": "Full stack e-commerce platform",
-    "proj3.desc": "Full stack e-commerce platform for product management and sales. Integrates user authentication, catalog with dynamic filters, persistent shopping cart and payment gateway. Includes an admin panel for real-time inventory, order and sales metrics management.",
-    "proj4.title": "WhatsApp Bot & Automation — Sodimac",
-    "proj4.desc": "Conversational bot for hiring automation featuring smart session resumption, automatic privacy-compliant data deletion (PDP) and optimized flows that reduced process time from 25 to 17 min. Database mass automation and update system: data processing solution for batch insertion, correction and updating of master data, salaries and personnel requests, including AI-assisted bulk adjustments.",
-    "proj5.title": "Clinical Scheduling Ecosystem & WhatsApp Bot",
-    "proj5.desc": "Modular full-stack solution for self-service dental appointment management via WhatsApp and administration through a vanilla JavaScript SPA web portal. Conversational bot (Meta Cloud API) with a state machine and PostgreSQL persistence for patient registration, service/pricing queries and real-time scheduling, cancellation or rescheduling without human intervention. Admin SPA with hash routing and role-based access for agenda management, overbooking and chair-based availability. Modular REST API on Node.js/Express with parameterized queries, JWT authentication, lockout policies and fire-and-forget architecture for transactional notifications.",
-    "proj.viewCode": "View code →",
-    "certs.label": "Certifications", "certs.title": "Continuous learning.",
+    "proj1.desc": "Arcade game that detects the player's emotion through the camera in real time and dynamically adjusts the difficulty. It combines computer vision, facial classification models and game logic. The system identifies 7 emotions and scales parameters such as speed, obstacles and score.",
+    "proj2.title": "Habit-tracking mobile app",
+    "proj2.desc": "Mobile app with a modular architecture for tracking and optimizing daily habits. It integrates scheduled notifications, a statistics engine with real-time progress visualization and local and remote data persistence. Built following Material Design guidelines to ensure intuitive navigation and high user retention.",
+    "proj3.title": "Full-stack e-commerce platform",
+    "proj3.desc": "Full-stack e-commerce platform for managing and selling products. It integrates user authentication, a catalog with dynamic filters, a persistent shopping cart and a payment gateway. It also includes an admin panel for real-time management of inventory, orders and sales metrics.",
+    "proj4.title": "WhatsApp bot & automation — Sodimac",
+    "proj4.desc": "Conversational bot that automates the hiring process, with smart session resumption, automatic privacy-compliant data deletion (PDP) and optimized flows that cut process time from 25 to 17 min. It also includes a bulk database update system for batch insertion, correction and updating of master data, salaries and staffing requests, with AI-assisted bulk adjustments.",
+    "proj5.title": "Clinical scheduling ecosystem & WhatsApp bot",
+    "proj5.desc": "Modular full-stack solution for self-service dental appointment booking via WhatsApp, managed from a vanilla JavaScript SPA web portal. Conversational bot (Meta Cloud API) with a state machine and PostgreSQL persistence for patient registration, service and pricing inquiries, and real-time booking, cancellation or rescheduling without human intervention. Admin SPA with hash routing and role-based access control to manage schedules, overbooking and chair availability. Modular REST API on Node.js/Express with parameterized queries, JWT authentication, account lockout policies and a fire-and-forget architecture for transactional notifications.",
+    "proj6.title": "NoShowGuard — Medical appointment no-show prediction",
+    "proj6.desc": "End-to-end machine learning system that estimates the probability of a patient missing a medical appointment and recommends whether to send a reminder based on expected cost. Trained on 110,527 real appointments using leakage-free chronological validation, it relies on a calibrated logistic regression that beats every baseline (PR-AUC 0.333 vs. 0.260). Includes SHAP explainability, “what if?” analysis, drift monitoring, 168 automated tests, GitHub Actions CI and a Streamlit app.",
+    "proj.viewCode": "View on GitHub →",
+    "gallery.prev": "Previous image", "gallery.next": "Next image",
+    "gallery.close": "Close", "gallery.dialog": "Enlarged image view",
+    "alt.profile": "Profile photo of Mateo Rendón Cañón",
+    "alt.ml1": "NoShowGuard: form with the appointment and patient details",
+    "alt.ml2": "NoShowGuard: result with calibrated probability, risk level and SHAP factors",
+    "alt.ml3": "NoShowGuard: “what if?” curve showing risk by booking lead time",
+    "alt.ml4": "NoShowGuard: exact variables seen by the model",
+    "alt.ml5": "NoShowGuard: full view with high risk and a simulated reminder",
+    "meta.title": "Mateo Rendón Cañón — Systems Engineer",
+    "certs.label": "Certifications", "certs.title": "Continuous learning.", "certs.view": "View ↗",
     "cert1.name": "EF SET English Certificate (C2 Proficient - 71/100)",
     "cert2.name": "Google Cloud Computing Foundations",
     "cert3.name": "Scrum Fundamentals Certified (SFC)",
@@ -1479,10 +1628,11 @@ const translations = {
     "cert6.name": "Python Basics",
     "cert7.name": "Beginning C++ Programming — From Beginner to Beyond",
     "stack.label": "Technologies", "stack.title": "My stack.",
-    "contact.title": "Let's talk?",
+    "contact.title": "Let's talk",
     "contact.desc": "Open to opportunities in software development, automation and data. I reply within 24 hours.",
-    "contact.whatsapp": "Message on WhatsApp →",
-    "contact.gmail": "Send email (Gmail) →"
+    "contact.phone": "PHONE",
+    "contact.whatsapp": "Message me on WhatsApp →",
+    "contact.gmail": "Send an email (Gmail) →"
   }
 };
 
@@ -1491,7 +1641,9 @@ let currentLang = 'es';
 function setLang(lang) {
   currentLang = lang;
   document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.textContent === lang.toUpperCase());
+    const isActive = btn.textContent === lang.toUpperCase();
+    btn.classList.toggle('active', isActive);
+    btn.setAttribute('aria-pressed', String(isActive));
   });
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
@@ -1499,6 +1651,26 @@ function setLang(lang) {
     if (val) el.innerHTML = val;
   });
   document.documentElement.lang = lang;
+  labelControls();
+}
+
+// Nombres accesibles para los controles que solo muestran un símbolo (❮ ❯ ×)
+function labelControls() {
+  const t = translations[currentLang];
+  document.querySelectorAll('.gallery-btn.prev-btn, #lightbox-prev').forEach(b => b.setAttribute('aria-label', t['gallery.prev']));
+  document.querySelectorAll('.gallery-btn.next-btn, #lightbox-next').forEach(b => b.setAttribute('aria-label', t['gallery.next']));
+  document.querySelector('.lightbox-close')?.setAttribute('aria-label', t['gallery.close']);
+  document.getElementById('lightbox')?.setAttribute('aria-label', t['gallery.dialog']);
+  document.title = t['meta.title'];
+
+  // Textos alternativos: las capturas con descripción propia usan su clave;
+  // el resto se nombra con el título ya traducido del proyecto: "Título (2/6)"
+  document.querySelectorAll('[data-i18n-alt]').forEach(img => { img.alt = t[img.dataset.i18nAlt]; });
+  document.querySelectorAll('.project-card').forEach(card => {
+    const title = card.querySelector('.project-title')?.textContent.trim();
+    const imgs = card.querySelectorAll('.project-gallery-img:not([data-i18n-alt])');
+    imgs.forEach((img, i) => { img.alt = `${title} (${i + 1}/${imgs.length})`; });
+  });
 }
 
 // ── Typewriter ──────────────────────────────────────────────────────────────
@@ -1508,6 +1680,7 @@ const roles = {
 };
 
 let rIdx = 0, cIdx = 0, deleting = false;
+const caret = document.querySelector('.cursor');
 
 function typeLoop() {
   const words = roles[currentLang];
@@ -1515,34 +1688,35 @@ function typeLoop() {
   const el    = document.getElementById('typewriter');
   if (!el) return;
 
+  // Si se cambia de idioma a mitad de palabra, la nueva puede ser más corta
+  cIdx = Math.min(cIdx, word.length);
+  caret?.classList.add('is-typing');
+
   if (!deleting) {
-    el.textContent = word.slice(0, cIdx + 1);
     cIdx++;
-    if (cIdx === word.length) { deleting = true; setTimeout(typeLoop, 1800); return; }
+    el.textContent = word.slice(0, cIdx);
+    if (cIdx >= word.length) { deleting = true; caret?.classList.remove('is-typing'); setTimeout(typeLoop, 1800); return; }
     setTimeout(typeLoop, 70);
   } else {
-    el.textContent = word.slice(0, cIdx - 1);
-    cIdx--;
-    if (cIdx === 0) { deleting = false; rIdx++; setTimeout(typeLoop, 300); return; }
+    cIdx = Math.max(cIdx - 1, 0);
+    el.textContent = word.slice(0, cIdx);
+    if (cIdx === 0) { deleting = false; rIdx++; caret?.classList.remove('is-typing'); setTimeout(typeLoop, 300); return; }
     setTimeout(typeLoop, 35);
   }
 }
 
 // ── Scroll animations ────────────────────────────────────────────────────────
+// Se revela una sola vez. El escalonado cuenta solo los elementos que entran
+// juntos (antes contaba todos, y al recargar a mitad de página el contenido
+// visible podía tardar más de un segundo en aparecer) y se limita a ~300ms.
 const observer = new IntersectionObserver(entries => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('visible'), i * 80);
-
-      // Animate skill bars
-      e.target.querySelectorAll('.skill-fill').forEach(bar => {
-        bar.style.width = bar.dataset.w + '%';
-      });
-
-      observer.unobserve(e.target);
-    }
+  const entering = entries.filter(e => e.isIntersecting);
+  entering.forEach((e, i) => {
+    e.target.style.animationDelay = `${Math.min(i, 5) * 60}ms`;
+    e.target.classList.add('visible');
+    observer.unobserve(e.target);
   });
-}, { threshold: 0.15 });
+}, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
 
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
@@ -1596,6 +1770,7 @@ function setImage(projectId, index) {
 // ── Lightbox Logic ───────────────────────────────────────────────────────────
 let currentLightboxProjectId = '';
 let currentLightboxImageIndex = 0;
+let focusBeforeLightbox = null;
 
 function openLightbox(imgElement) {
   const lightbox = document.getElementById('lightbox');
@@ -1614,8 +1789,10 @@ function openLightbox(imgElement) {
   }
 
   updateLightboxContent();
+  focusBeforeLightbox = document.activeElement;
   lightbox.classList.add('active');
   document.body.style.overflow = 'hidden';
+  lightbox.focus({ preventScroll: true });
 }
 
 function updateLightboxContent() {
@@ -1654,10 +1831,17 @@ function closeLightbox(event) {
   if (event && (event.target.id === 'lightbox-img' || event.target.classList.contains('lightbox-btn'))) return;
   
   const lightbox = document.getElementById('lightbox');
-  if (!lightbox) return;
+  if (!lightbox || !lightbox.classList.contains('active')) return;
   
   lightbox.classList.remove('active');
   document.body.style.overflow = '';
+  // Devuelve el foco a donde estaba (p. ej. un botón de la galería)
+  if (focusBeforeLightbox && focusBeforeLightbox !== document.body) {
+    focusBeforeLightbox.focus({ preventScroll: true });
+  } else {
+    document.activeElement?.blur();
+  }
+  focusBeforeLightbox = null;
 }
 
 document.addEventListener('keydown', (e) => {
@@ -1678,16 +1862,56 @@ document.querySelectorAll('.project-gallery-img').forEach(img => {
   img.addEventListener('click', () => openLightbox(img));
 });
 
+// ── Swipe en galerías (solo táctil) ─────────────────────────────────────────
+// Un flick rápido basta aunque sea corto (velocidad > 0.11 px/ms); un gesto
+// mayormente vertical se deja al scroll de la página.
+let lastSwipeAt = 0;
+
+document.querySelectorAll('.project-gallery-container').forEach(gallery => {
+  const projectId = gallery.closest('.project-card')?.id;
+  if (!projectId) return;
+  let startX = 0, startY = 0, startT = 0, tracking = false;
+
+  gallery.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'touch' || !e.isPrimary) return; // ignora mouse y dedos extra
+    tracking = true;
+    startX = e.clientX; startY = e.clientY; startT = performance.now();
+  });
+
+  gallery.addEventListener('pointerup', e => {
+    if (!tracking || !e.isPrimary) return;
+    tracking = false;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    if (Math.abs(dx) < 12 || Math.abs(dx) < Math.abs(dy)) return; // toque o scroll vertical
+    const velocity = Math.abs(dx) / Math.max(performance.now() - startT, 1);
+    if (Math.abs(dx) < 40 && velocity < 0.11) return;
+    lastSwipeAt = performance.now();
+    changeImage(projectId, dx < 0 ? 1 : -1);
+  });
+
+  gallery.addEventListener('pointercancel', () => { tracking = false; });
+
+  // Un swipe no debe terminar abriendo el lightbox ni pulsando un botón
+  gallery.addEventListener('click', e => {
+    if (performance.now() - lastSwipeAt < 400) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  }, true);
+});
+
 // ── Init ─────────────────────────────────────────────────────────────────────
+labelControls();
 typeLoop();
 </script>
 
 <!-- Lightbox Modal -->
-<div id="lightbox" class="lightbox-modal" onclick="closeLightbox(event)">
-  <span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
-  <button class="lightbox-btn prev-btn" id="lightbox-prev" onclick="changeLightboxImage(-1, event)">&#10094;</button>
+<div id="lightbox" class="lightbox-modal" role="dialog" aria-modal="true" aria-label="Vista ampliada de la imagen" tabindex="-1" onclick="closeLightbox(event)">
+  <button type="button" class="lightbox-close" aria-label="Cerrar" onclick="closeLightbox(event)">&times;</button>
+  <button type="button" class="lightbox-btn prev-btn" id="lightbox-prev" aria-label="Imagen anterior" onclick="changeLightboxImage(-1, event)">&#10094;</button>
   <img class="lightbox-content" id="lightbox-img" src="" alt="Vista ampliada">
-  <button class="lightbox-btn next-btn" id="lightbox-next" onclick="changeLightboxImage(1, event)">&#10095;</button>
+  <button type="button" class="lightbox-btn next-btn" id="lightbox-next" aria-label="Imagen siguiente" onclick="changeLightboxImage(1, event)">&#10095;</button>
 </div>
 
 </body>
